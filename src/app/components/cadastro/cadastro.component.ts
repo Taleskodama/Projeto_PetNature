@@ -14,6 +14,9 @@ export class CadastroComponent {
   email: string ='';
   password: string = '';
   confirmPassword: string = '';
+  tipoUsuario: string = ''; // (estoquista ou leitor)
+  codigo: string = ''; // código (caso seja estoquista)
+
 
   constructor(private auth: AuthService){}
 

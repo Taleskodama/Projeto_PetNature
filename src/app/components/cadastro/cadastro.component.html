@@ -1,35 +1,61 @@
-<div class="page">
+<div class="bg-primary-light">
     <div class="body min-h-screen flex justify-center items-center">
-        <div class="caixa col-4 w-10/12 max-w-md">
+        <div class="caixa bg-white col-4 w-10/12 max-w-md rounded-2xl">
             <div class="card-shadow">
-                <div class="card-body p-8 rounded-2xl border-solid border-2 border-black">
+                <div class="card-body p-8 rounded-2xl border-solid border-2 border-secondary-dark">
                     <div class="flex justify-center mb-4">
-                        <img src="../../../assets/logos/asimoviesWhite.png" alt="Logo" class="h-14 mb-8">
+                        <img src="../../../assets/logos/Logo -  PetNature.png" alt="Logo" class="h-14 mb-8">
+                    </div>
+                     <!-- Login -->
+                    <div class="text-left mb-1">
+                        <h2 class="text-xl font-semibold text-accent-dark">Criar conta</h2>
+                        <p class="text-[10px] text-accent-dark">Insira suas informações pessoais abaixo</p>
                     </div>
                     <form (ngSubmit)="cadastrar()">
-                        <div class="mb-4">
-                            <label for="name" class="form-label ml-1">Nome Completo</label>
-                            <input type="text" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="name" [(ngModel)]="name" name="name" placeholder="Nome">
+                        <div class="mb-0">
+
+                            <label for="name" class="form-label ml-1"></label>
+                            <input type="text" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition mt-1" id="name" [(ngModel)]="name" name="name" placeholder="Nome">
                         </div>
-                        <div class="mb-4">
-                            <label for="email" class="form-label ml-1">E-mail</label>
-                            <input type="email" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="email" [(ngModel)]="email" name="email" placeholder="E-mail">
+                        <div class="mb-0">
+                            <label for="email" class="form-label ml-1"></label>
+                            <input type="email" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition mt-1" id="email" [(ngModel)]="email" name="email" placeholder="E-mail">
                         </div>
-                        <div class="mb-4">
-                            <label for="password" class="form-label ml-1">Senha</label>
-                            <input type="password" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="password" [(ngModel)]="password" name="password" placeholder="Senha">
+                        <div class="mb-0">
+                            <label for="password" class="form-label ml-1"></label>
+                            <input type="password" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition mt-1" id="password" [(ngModel)]="password" name="password" placeholder="Senha">
                         </div>
-                        <div class="mb-4">
-                            <label for="confirmPassword" class="form-label ml-1">Confirme a senha</label>
-                            <input type="password" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirmar Senha">
+                        <div class="mb-0">
+                            <label for="confirmPassword" class="form-label ml-1"></label>
+                            <input type="password" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition mt-1" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirmar Senha">
                         </div>
+                        <!-- Opções Estoquista ou Leitor -->
+                        <div class="mb-0 mt-4 flex items-center space-x-4">
+                            <label class="flex items-center">
+                                <input type="radio" [(ngModel)]="tipoUsuario" name="tipoUsuario" value="estoquista" class="mr-2">
+                                Estoquista
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" [(ngModel)]="tipoUsuario" name="tipoUsuario" value="leitor" class="mr-2">
+                                Leitor
+                            </label>
+                        </div>
+
+                        <!-- Campo Código (Só aparece para Estoquista) -->
+                        <div class="mb-4" *ngIf="tipoUsuario === 'estoquista'">
+                            <label for="codigo" class="form-label ml-1"></label>
+                            <input type="text" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition mt-1" 
+                                id="codigo" [(ngModel)]="codigo" name="codigo" placeholder="Código">
+                        </div>
+
+                        
                         <div class="mt-10">
-                            <button type="submit" class="w-full bg-black border text-white py-2 rounded-lg hover:shadow-lg transition-shadow duration-200">
-                                Cadastre-se
+                            <button type="submit" class="w-full bg-secondary-dark border text-white py-2 rounded-lg hover:shadow-lg transition-shadow duration-200">
+                                Criar conta
                             </button>
                         </div>
-                        <div class="flex justify-center items-center mt-6 mb-2">
-                            <div class="text-sm">Já possui uma conta?
+                        <div class="flex items-center mt-6 mb-2">
+                            <div class="text-[12px] text-left">Já possui uma conta?
                                 <a href="../" class="hover:underline">Entrar</a>
                             </div>
                         </div>

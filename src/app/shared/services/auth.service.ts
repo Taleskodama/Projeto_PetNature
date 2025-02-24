@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { UserInterface } from '../interfaces/user-interface';
 import { Observable, of, switchMap } from 'rxjs';
+import firebase from 'firebase/compat/app';
 
 @Injectable({
   providedIn: 'root'
@@ -79,5 +80,34 @@ export class AuthService {
       })
     )
   }
+
+  loginWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    
+    this.auth.signInWithPopup(provider)
+      .then(async (credential) => {
+        if (credential.user) {
+          const userRef = this.firestore.collection('users').doc(credential.user.uid);
+          
+          // Verifica se o usuário já existe no Firestore
+          const userSnapshot = await userRef.get().toPromise();
+          if (!userSnapshot?.exists) {
+            const userData: UserInterface = {
+              name: credential.user.displayName || '',
+              email: credential.user.email || '',
+              tipo: 'Usuário'
+            };
+            await this.salvarDados(credential.user.uid, userData);
+          }
+  
+          console.log('Usuário logado com Google:', credential.user);
+          this.router.navigate(['/home']);
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao fazer login com Google:', error);
+      });
+  }
+  
 
 }
