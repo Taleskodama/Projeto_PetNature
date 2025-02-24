@@ -9,7 +9,8 @@ import {AngularFireModule} from '@angular/fire/compat';
 import {AngularFireAuthModule} from '@angular/fire/compat/auth';
 import { environment } from '../environments/environment';
 import { CadastroComponent } from './components/cadastro/cadastro.component';
-import { RecuperaSenhaComponent } from './components/recupera-senha/recupera-senha.component';
+import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-senha.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -17,14 +18,16 @@ import { RecuperaSenhaComponent } from './components/recupera-senha/recupera-sen
     AppComponent,
     LoginComponent,
     CadastroComponent,
-    RecuperaSenhaComponent,
+    RecuperarSenhaComponent,
   
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
