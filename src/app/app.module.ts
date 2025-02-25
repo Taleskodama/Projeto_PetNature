@@ -14,6 +14,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { TelaPrincipalComponent } from './components/tela-principal/tela-principal.component';
+import { PerfilComponent } from './components/perfil/perfil.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { TelaPrincipalComponent } from './components/tela-principal/tela-princip
     RecuperarSenhaComponent,
     HomeComponent,
     SidebarComponent,
-    TelaPrincipalComponent
+    TelaPrincipalComponent,
+    PerfilComponent
   
   ],
   imports: [

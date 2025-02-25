@@ -5,13 +5,15 @@ import { CadastroComponent } from './components/cadastro/cadastro.component';
 import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-senha.component';
 import { HomeComponent } from './components/home/home.component';
 import { TelaPrincipalComponent } from './components/tela-principal/tela-principal.component';
+import { PerfilComponent } from './components/perfil/perfil.component';
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
   {path:'login', component: LoginComponent},
   {path:'cadastro', component: CadastroComponent},
   {path:'recuperar-senha', component: RecuperarSenhaComponent},
-  {path:'telaPrincipal', component:TelaPrincipalComponent}
+  {path:'telaPrincipal', component:TelaPrincipalComponent},
+  {path:'perfil', component:PerfilComponent}
   
 ];
 
