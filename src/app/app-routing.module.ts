@@ -12,7 +12,7 @@ const routes: Routes = [
   {path:'', component: HomeComponent},
   {path:'login', component: LoginComponent},
   {path:'cadastro', component: CadastroComponent},
-  {path:'recuperar-senha', component: RecuperarSenhaComponent},
+  {path:'recuperarSenha', component: RecuperarSenhaComponent},
   {path:'telaPrincipal', component:TelaPrincipalComponent},
   {path:'perfil', component:PerfilComponent},
   {path:'usuariosAdmin',component:UsuariosAdminComponent}

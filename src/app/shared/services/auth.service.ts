@@ -42,17 +42,21 @@ export class AuthService {
     return this.firestore.collection('users').doc(id).set(user);
   }
 
-  login(email: string, password: string){
-    this.auth.signInWithEmailAndPassword(email, password).then((userCredential)=>{
-      if(userCredential.user?.emailVerified){
-        console.log("sucesso");
-        this.router.navigate(['/home']);
-      }
-    })
-
-    .catch((error)=>{
-      console.log(error)
-    })
+  login(email: string, password: string): Promise<any> {
+    return this.auth.signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        if (userCredential.user?.emailVerified) {
+          console.log("sucesso");
+          this.router.navigate(['/telaPrincipal']);
+          return userCredential; // Retorna o usuário logado
+        } else {
+          throw new Error("E-mail não verificado. Por favor, verifique seu e-mail.");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        throw error; // Propaga o erro para ser tratado no componente
+      });
   }
 
   redefinirSenha(email:string){
@@ -81,14 +85,14 @@ export class AuthService {
     )
   }
 
-  loginWithGoogle() {
+  loginWithGoogle(): Promise<any> {
     const provider = new firebase.auth.GoogleAuthProvider();
-    
-    this.auth.signInWithPopup(provider)
+  
+    return this.auth.signInWithPopup(provider)
       .then(async (credential) => {
         if (credential.user) {
           const userRef = this.firestore.collection('users').doc(credential.user.uid);
-          
+  
           // Verifica se o usuário já existe no Firestore
           const userSnapshot = await userRef.get().toPromise();
           if (!userSnapshot?.exists) {
@@ -101,13 +105,16 @@ export class AuthService {
           }
   
           console.log('Usuário logado com Google:', credential.user);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/telaPrincipal']);
+          return credential.user; // 🔹 Adiciona um retorno explícito
         }
+  
+        throw new Error("Erro ao autenticar usuário com Google"); // 🔹 Retorna um erro se `credential.user` for `null`
       })
       .catch(error => {
         console.error('Erro ao fazer login com Google:', error);
+        throw error; // 🔹 Propaga o erro para ser tratado no componente
       });
   }
-  
 
 }

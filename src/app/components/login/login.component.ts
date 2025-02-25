@@ -2,35 +2,43 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 
-
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrls: ['./login.component.scss']  //  Corrigido de styleUrl para styleUrls (erro no seu código)
 })
 export class LoginComponent {
 
-  email: string ='';
+  email: string = '';
   password: string = '';
   rememberMe: boolean = false;
 
-  constructor (private router: Router, private auth: AuthService) { }
+  constructor(private router: Router, private auth: AuthService) { }
 
-  cadastrar () {
+  cadastrar() {
     this.router.navigate(['/cadastro']);
   }
-
-  login(){
-    if(this.email !== '' && this.password !== ''){
+  login() {
+    if (this.email !== '' && this.password !== '') {
       this.auth.login(this.email, this.password)
-    }else{
+        .then(() => {
+          this.router.navigate(['/telaPrincipal']);
+        })
+        .catch((error: any) => {
+          alert('Erro ao fazer login: ' + error.message);
+        });
+    } else {
       alert('Preencha todos os campos');
     }
   }
-
+  
   loginWithGoogle() {
-    this.auth.loginWithGoogle();
+    this.auth.loginWithGoogle()
+      .then(() => {
+        this.router.navigate(['/telaPrincipal']);
+      })
+      .catch((error: any) => {
+        alert('Erro ao fazer login com Google: ' + error.message);
+      });
   }
-
 }
