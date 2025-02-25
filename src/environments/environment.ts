@@ -1,12 +1,11 @@
 export const environment = {
     production: false,
     firebase: {
-        apiKey: "AIzaSyDTHMc7eA_nOrATOfubrB3L2bMmysFgLMg",
-        authDomain: "petnature-9a154.firebaseapp.com",
-        projectId: "petnature-9a154",
-        storageBucket: "petnature-9a154.firebasestorage.app",
-        messagingSenderId: "69917933926",
-        appId: "1:69917933926:web:082a62cda52b1d01ea08a7",
-        measurementId: "G-26NEMKJF6M"
+    apiKey: "AIzaSyCunuN4Yp7_V3ZXjDgdBc05_zntIGL0WtA",
+    authDomain: "pet-nature.firebaseapp.com",
+    projectId: "pet-nature",
+    storageBucket: "pet-nature.firebasestorage.app",
+    messagingSenderId: "591895256138",
+    appId: "1:591895256138:web:542824ab12cf5fa182dab3"
     }
 }
