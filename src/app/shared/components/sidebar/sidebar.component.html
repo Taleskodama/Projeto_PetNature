@@ -1,36 +1,57 @@
-<aside class="h-screen w-60 bg-secondary-dark text-white flex flex-col justify-between shadow-md fixed">
-    
+<aside class="h-screen bg-secondary-dark text-white flex flex-col justify-between shadow-md fixed" style="width: 20%;">
+
     <!-- LOGO -->
-    <div class="p-5 flex items-center gap-2">
-        <img src="../../../assets/logos/Logo-Petnature3x.png" alt="Logo" class="h-8">
+    <div class="pt-5 flex items-center gap-2 justify-center">
+        <img src="assets/logos/Logo_Branca.png" alt="Logo PetNature" class="h-24 w-auto">
     </div>
 
     <!-- MENU -->
     <nav class="flex-1 px-4">
+        <!-- Título "Menu" -->
+        <p class="text-gray-300 text-sm ml-4 font-[400] mt-4 mb-2">Menu</p>
+
         <ul class="space-y-4">
             <li class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition">
-                <i class="fas fa-user"></i> Perfil
+                <a routerLink="/perfil" class="flex items-center gap-3 w-full  rounded-lg">
+                    <img src="assets/icons/perfil.svg" alt="" class="h-5 w-5">
+                    <span class="text-sm">Perfil</span>
+                </a>
+            </li>
+            
+            <li class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition">
+                <a routerLink="/usuarios" class="flex items-center gap-3 w-full  rounded-lg">
+                    <img src="assets/icons/usuarios.svg" alt="" class="h-5 w-5">
+                    <span class="text-sm">Usuários</span>
+                </a>
             </li>
             <li class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition">
-                <i class="fas fa-users"></i> Usuários
+                <a routerLink="/produtos" class="flex items-center gap-3 w-full  rounded-lg">
+                    <img src="assets/icons/produtos.svg" alt="" class="h-5 w-5">
+                    <span class="text-sm">Produtos</span>
+                </a>
             </li>
-            <li class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition">
-                <i class="fas fa-tag"></i> Produtos
+            <li class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-secondary transition">
+                <a routerLink="/estoque" class="flex items-center gap-3 w-full  rounded-lg">
+                    <img src="assets/icons/estoque.svg" alt="" class="h-5 w-5">
+                    <span class="text-sm">Estoque</span>
+                </a>
             </li>
-            <li class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition">
-                <i class="fas fa-warehouse"></i> Estoque
-            </li>
-            <li class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition">
-                <i class="fas fa-file-alt"></i> Registro de baixas
+            <li class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-secondary transition">
+                <a routerLink="/registroBaixas" class="flex items-center gap-3 w-full  rounded-lg">
+                    <img src="assets/icons/registro_baixas.svg" alt="" class="h-5 w-5">
+                    <span class="text-sm">Registro de Baixas</span>
+                </a>
             </li>
         </ul>
     </nav>
 
-    <!-- BOTÃO SAIR -->
-    <div class="p-4">
-        <button class="w-full flex items-center gap-3 p-2 bg-red-600 rounded-lg hover:bg-red-700 transition">
-            <i class="fas fa-sign-out-alt"></i> Sair da conta
-        </button>
-    </div>
+   <!-- BOTÃO SAIR -->
+<div class="mb-24 ml-10 pr-48">
+    <a [routerLink]="'/login'" class="w-full flex items-center gap-3 p-2 rounded-lg cursor-pointer hover-bg-rgba transition">
+        <img src="assets/icons/sair.svg" alt="Sair" class="h-5 w-5">
+        <span class="text-sm">Sair da conta</span>
+    </a>
+</div>
+
 
 </aside>

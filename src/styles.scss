@@ -7,3 +7,12 @@
 body {
     font-family: 'Poppins', sans-serif;
 }
+@layer utilities {
+    .hover-bg-rgba {
+      @apply bg-transparent transition;
+    }
+    .hover-bg-rgba:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+  
