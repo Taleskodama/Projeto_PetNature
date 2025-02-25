@@ -1,19 +1,19 @@
-<div class="min-h-screen flex items-stretch">
+<div class="min-h-screen flex flex-col md:flex-row items-center md:items-stretch">
     
-    <!-- Coluna da Imagem dentro do Card Verde -->
-    <div class="hidden md:flex w-5/12 justify-center items-center m-4 p-6 bg-green-100 rounded-2xl shadow-lg">
-        <div class="w-4/5">
-            <img src="../../../assets/imgs/ilustracao_estoque.png" alt="Imagem de Login" class="w-full h-auto object-contain">
+    <!-- Coluna da Imagem dentro do Card Verde (some em telas menores) -->
+    <div class="hidden lg:flex w-5/12 justify-center items-end ml-[40px] my-[26px] p-6 bg-primary-light rounded-2xl shadow-lg">
+        <div class="w-[65%]">
+            <img src="../../../assets/imgs/ilustracao_estoque.png" alt="Imagem de Login" class="w-full max-h-full object-contain">
         </div>
     </div>
 
     <!-- Coluna do Formulário -->
-    <div class="w-7/12 flex justify-center items-center bg-white">
+    <div class="w-full md:w-7/12 flex flex-1 justify-center items-center bg-white">
         <div class="w-10/12 max-w-md">
             
             <!-- Logo -->
             <div class="flex justify-center mb-4">
-                <img src="../../../assets/logos/Logo -  PetNature.png" alt="Logo" class="h-14">
+                <img src="../../../assets/logos/Logo-Petnature3x.png" alt="Logo" class="h-14">
             </div>
 
             <!-- Login -->
@@ -25,11 +25,13 @@
             <!-- Formulário -->
             <form (ngSubmit)="login()">
                 <div class="mb-3">
+                    <label for="email" class="block ml-1 text-sm font-[400] text-accent-gray mb-1">E-mail</label>
                     <input type="email" id="email" [(ngModel)]="email" name="email" 
                         class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
                         placeholder="E-mail" required>
                 </div>
                 <div class="mb-3">
+                    <label for="password" class="block ml-1 text-sm font-[400] text-accent-gray mb-1">Senha</label>
                     <input type="password" id="password" [(ngModel)]="password" name="password"
                         class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
                         placeholder="Senha" required>
@@ -45,7 +47,7 @@
             <div class="flex justify-between text-[12px] mt-3">
                 <p>
                     Não possui conta? 
-                    <a (click)="cadastrar()" class="text-secondary-dark hover:underline cursor-pointer font-medium">Cadastrar</a>
+                    <a (click)="cadastrar()" class="text-secondary-dark font-[600] hover:underline cursor-pointer ">Cadastrar</a>
                 </p>
                 <a href="../recuperar-senha" class="text-secondary-dark hover:underline cursor-pointer">
                     Esqueceu minha senha
@@ -61,7 +63,7 @@
 
             <!-- Login com Google -->
             <button type="button" (click)="loginWithGoogle()"
-                    class="w-full bg-white border border-gray-300 text-gray-800 py-2 rounded-lg hover:bg-gray-100 flex items-center justify-center shadow-sm transition">
+                    class="w-full bg-white border border-gray-300 text-gray-800 py-2 rounded-lg hover:bg-gray-200 flex items-center justify-center shadow-sm transition">
                 <img src="../../../assets/icons/icons8-google-48.png" alt="Google Logo" class="w-5 h-5 mr-2">
                 Entrar com Google
             </button>
