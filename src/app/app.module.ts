@@ -12,6 +12,8 @@ import { CadastroComponent } from './components/cadastro/cadastro.component';
 import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-senha.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
+import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { TelaPrincipalComponent } from './components/tela-principal/tela-principal.component';
 
 
 @NgModule({
@@ -21,6 +23,8 @@ import { HomeComponent } from './components/home/home.component';
     CadastroComponent,
     RecuperarSenhaComponent,
     HomeComponent,
+    SidebarComponent,
+    TelaPrincipalComponent
   
   ],
   imports: [

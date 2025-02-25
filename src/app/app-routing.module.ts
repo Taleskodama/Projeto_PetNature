@@ -4,12 +4,14 @@ import { LoginComponent } from './components/login/login.component';
 import { CadastroComponent } from './components/cadastro/cadastro.component';
 import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-senha.component';
 import { HomeComponent } from './components/home/home.component';
+import { TelaPrincipalComponent } from './components/tela-principal/tela-principal.component';
 
 const routes: Routes = [
-  {path:'', component: LoginComponent},
-  {path:'home', component: HomeComponent},
+  {path:'', component: HomeComponent},
+  {path:'login', component: LoginComponent},
   {path:'cadastro', component: CadastroComponent},
   {path:'recuperar-senha', component: RecuperarSenhaComponent},
+  {path:'telaPrincipal', component:TelaPrincipalComponent}
   
 ];
 
