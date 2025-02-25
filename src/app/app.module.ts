@@ -15,6 +15,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { TelaPrincipalComponent } from './components/tela-principal/tela-principal.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
+import { HeaderComponent } from './shared/components/header/header.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { PerfilComponent } from './components/perfil/perfil.component';
     HomeComponent,
     SidebarComponent,
     TelaPrincipalComponent,
-    PerfilComponent
+    PerfilComponent,
+    HeaderComponent
   
   ],
   imports: [
