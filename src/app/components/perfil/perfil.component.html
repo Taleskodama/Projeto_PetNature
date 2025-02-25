@@ -1,1 +1,35 @@
 <app-sidebar></app-sidebar>
+
+
+<div class="ml-80  mt-32 p-6 max-w-xl ">
+    <h1 class="text-accent-dark text-4xl">Informações Pessoais</h1>
+    <div class="mt-9 mb-16">
+        <img src="../../../assets/imgs/Foto_User.png" alt="Foto de perfil" class="w-20 h-20 rounded-full mt-4">
+    </div>
+    <form >
+        <div class="mb-3">
+            <label for="email" class="block ml-1 text-sm font-[400] text-accent-gray mb-1">E-mail</label>
+            <input type="email" id="email"  name="email" 
+                class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
+                placeholder="E-mail" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="block ml-1 text-sm font-[400] text-accent-gray mb-1">Senha</label>
+            <input type="password" id="password"  name="password"
+                class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
+                placeholder="Senha" required>
+        </div>
+        <div class="mb-3">
+            <label placeholder="Código" for="password" class="block ml-1 text-sm font-[400] text-accent-gray mb-1">Código</label>
+            <input type="password" id="password"  name="password"
+                class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
+                placeholder="Código" required>
+        </div>
+
+        <button type="submit" 
+            class="w-full bg-secondary-dark text-white py-2 rounded-lg hover:bg-secondary transition font-semibold shadow-md">
+            Salvar informações
+        </button>
+    </form>
+</div>
+    
