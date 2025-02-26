@@ -12,7 +12,8 @@ export class UsuariosAdminComponent {
   constructor(private userService: AuthService) {}
 
   ngOnInit(): void {
-    this.userService.getUserData().subscribe(data => {
+    this.userService.getUserList().subscribe(data => {
+      console.log('dados recebidos', data);
       this.users = data;
     });
   }

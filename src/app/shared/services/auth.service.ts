@@ -90,6 +90,10 @@ salvarDados(id: string, userData: any) {
     );
 }
 
+getUserList(): Observable<any> {
+  return this.firestore.collection('users').valueChanges();
+}
+
 
   loginWithGoogle(): Promise<any> {
     const provider = new firebase.auth.GoogleAuthProvider();
