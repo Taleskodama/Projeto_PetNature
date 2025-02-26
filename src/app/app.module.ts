@@ -17,7 +17,9 @@ import { TelaPrincipalComponent } from './components/tela-principal/tela-princip
 import { PerfilComponent } from './components/perfil/perfil.component';
 import {HeaderComponent} from './shared/components/header/header.component';
 import { UsuariosAdminComponent } from './components/usuarios-admin/usuarios-admin.component';
-import { EditarUsuarioComponent } from './src/app/components/editar-usuario/editar-usuario.component';
+import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuario.component';
+
+
 
 
 @NgModule({

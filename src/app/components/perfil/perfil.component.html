@@ -2,36 +2,38 @@
 <app-header></app-header>
 
 
-<div class="ml-80  mt-24 p-6 max-w-xl ">
+<div class="ml-[20%] w-[80%] mt-24 pl-[120px] p-6">
     <h1 class="text-accent-dark text-4xl font-semibold">Informações Pessoais</h1>
     <div class="mt-9 mb-14">
         <img src="../../../assets/imgs/Foto_User.png" alt="Foto de perfil" class="size-28 rounded-full mt-4">
     </div>
     <h2 class="text-accent-dark text-2xl mb-5 font-semibold">Tipo de usuário:</h2>
-    <form >
+    
+    <form class="flex flex-col ">
         <div class="mb-3">
-            <label for="email" class="block ml-1 text-sm font-[400] text-accent-gray mb-1">E-mail</label>
-            <input type="email" id="email"  name="email" 
-                class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
+            <label for="email" class="block text-sm font-[400] text-accent-gray mb-1">E-mail</label>
+            <input type="email" id="email" name="email" 
+                class="w-[550px] p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
                 placeholder="E-mail" required>
         </div>
         <div class="mb-3">
-            <label for="password" class="block ml-1 text-sm font-[400] text-accent-gray mb-1">Senha</label>
-            <input type="password" id="password"  name="password"
-                class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
+            <label for="password" class="block text-sm font-[400] text-accent-gray mb-1">Senha</label>
+            <input type="password" id="password" name="password"
+                class="w-[550px] p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
                 placeholder="Senha" required>
         </div>
         <div class="mb-3">
-            <label placeholder="Código" for="password" class="block ml-1 text-sm font-[400] text-accent-gray mb-1">Código</label>
-            <input type="password" id="password"  name="password"
-                class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
+            <label for="codigo" class="block text-sm font-[400] text-accent-gray mb-1">Código</label>
+            <input type="text" id="codigo" name="codigo"
+                class="w-[550px] p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
                 placeholder="Código" required>
         </div>
 
         <button type="submit" 
-            class="w-full bg-secondary-dark text-white py-2 rounded-lg hover:bg-secondary transition font-semibold shadow-md">
+            class="w-[550px] bg-secondary-dark text-white py-2 rounded-lg hover:bg-secondary transition font-semibold shadow-md">
             Salvar informações
         </button>
     </form>
 </div>
+
     
