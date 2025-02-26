@@ -7,6 +7,7 @@ import { HomeComponent } from './components/home/home.component';
 import { TelaPrincipalComponent } from './components/tela-principal/tela-principal.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { UsuariosAdminComponent } from './components/usuarios-admin/usuarios-admin.component';
+import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuario.component';
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path:'recuperarSenha', component: RecuperarSenhaComponent},
   {path:'telaPrincipal', component:TelaPrincipalComponent},
   {path:'perfil', component:PerfilComponent},
-  {path:'usuariosAdmin',component:UsuariosAdminComponent}
+  {path:'usuariosAdmin',component:UsuariosAdminComponent},
+  {path:'editarUsuario', component:EditarUsuarioComponent}
   
 ];
 
