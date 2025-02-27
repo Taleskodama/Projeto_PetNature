@@ -99,41 +99,45 @@ getUserList(): Observable<any> {
 }
 
 
-  loginWithGoogle(): Promise<any> {
-    const provider = new firebase.auth.GoogleAuthProvider();
+loginWithGoogle(): Promise<any> {
+  const provider = new firebase.auth.GoogleAuthProvider();
 
-    return this.auth.signInWithPopup(provider)
-        .then(async (credential) => {
-            if (credential.user) {
-                const userRef = this.firestore.collection('users').doc(credential.user.uid);
-                const userSnapshot = await userRef.get().toPromise();
+  return this.auth.signInWithPopup(provider)
+      .then(async (credential) => {
+          if (credential.user) {
+              const userRef = this.firestore.collection('users').doc(credential.user.uid);
+              const userSnapshot = await userRef.get().toPromise();
 
-                if (!userSnapshot?.exists) {
-                    const userData: UserInterface = {
-                        name: credential.user.displayName || '',
-                        email: credential.user.email || '',
-                        code: Math.random().toString(36).substring(2, 8),
-                        created_at: Date.now(),
-                        photo: credential.user.photoURL || '',
-                        role: 'Usuário',
-                        uid: credential.user.uid
-                    };
+              if (!userSnapshot?.exists) {
+                  const userData: UserInterface = {
+                      name: credential.user.displayName || '',
+                      email: credential.user.email || '',
+                      code: Math.random().toString(36).substring(2, 8),
+                      created_at: Date.now(),
+                      photo: credential.user.photoURL || '', // Garante que a foto seja salva
+                      role: 'Usuário',
+                      uid: credential.user.uid
+                  };
 
-                    await this.salvarDados(credential.user.uid, userData);
-                }
+                  await this.salvarDados(credential.user.uid, userData);
+              } else {
+                  // Atualiza a foto caso já exista o usuário no banco
+                  await userRef.update({ photo: credential.user.photoURL });
+              }
 
-                console.log('Usuário logado com Google:', credential.user);
-                this.router.navigate(['/telaPrincipal']);
-                return credential.user;
-            }
+              console.log('Usuário logado com Google:', credential.user);
+              this.router.navigate(['/telaPrincipal']);
+              return credential.user;
+          }
 
-            throw new Error("Erro ao autenticar usuário com Google");
-        })
-        .catch(error => {
-            console.error('Erro ao fazer login com Google:', error);
-            throw error;
-        });
+          throw new Error("Erro ao autenticar usuário com Google");
+      })
+      .catch(error => {
+          console.error('Erro ao fazer login com Google:', error);
+          throw error;
+      });
 }
+
 
 async getCurrentUser(): Promise<any> {
   return this.auth.currentUser ?? firstValueFrom(
