@@ -43,9 +43,13 @@ export class AuthService {
 }
 
 
-salvarDados(id: string, userData: any) {
-  return this.firestore.collection('users').doc(id).set(userData);
+salvarDados(id: string, user: UserInterface) {
+  return this.firestore.collection('users').doc(id).set({
+    ...user,
+    role: user.role || 'Usuário' // Define a role padrão se não existir
+  });
 }
+
 
 
   login(email: string, password: string): Promise<any> {
