@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { UserInterface } from '../interfaces/user-interface';
-import { Observable, of, switchMap } from 'rxjs';
+import { firstValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import firebase from 'firebase/compat/app';
 
 @Injectable({
@@ -133,6 +133,24 @@ getUserList(): Observable<any> {
             console.error('Erro ao fazer login com Google:', error);
             throw error;
         });
+}
+
+async getCurrentUser(): Promise<any> {
+  return this.auth.currentUser ?? firstValueFrom(
+    new Observable<any>((observer: any) => {
+      const unsubscribe = this.auth.onAuthStateChanged(user => {
+        observer.next(user);
+        observer.complete();
+      });
+      return { unsubscribe: async () => (await unsubscribe)() };
+    })
+  );
+}
+
+getUserType(id: string): Observable<string | null> {
+  return this.firestore.collection('users').doc(id).valueChanges().pipe(
+    map((user: any) => user ? user.role : null) // Aqui pega a role do usuário
+  );
 }
 
 

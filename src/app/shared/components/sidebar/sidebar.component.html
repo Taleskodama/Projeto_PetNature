@@ -18,7 +18,7 @@
                 </a>
             </li>
             
-            <li class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition">
+            <li *ngIf="isAdmin" class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition">
                 <a routerLink="/usuariosAdmin" class="flex items-center gap-3 w-full  rounded-lg">
                     <img src="assets/icons/usuarios.svg" alt="" class="h-5 w-5">
                     <span class="text-sm">Usuários</span>
@@ -30,13 +30,13 @@
                     <span class="text-sm">Produtos</span>
                 </a>
             </li>
-            <li class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-secondary transition">
+            <li *ngIf="isAdmin || isEstoquista" class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-secondary transition">
                 <a routerLink="/estoque" class="flex items-center gap-3 w-full  rounded-lg">
                     <img src="assets/icons/estoque.svg" alt="" class="h-5 w-5">
                     <span class="text-sm">Estoque</span>
                 </a>
             </li>
-            <li class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-secondary transition">
+            <li *ngIf="isAdmin || isEstoquista" class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-secondary transition">
                 <a routerLink="/registroBaixas" class="flex items-center gap-3 w-full  rounded-lg">
                     <img src="assets/icons/registro_baixas.svg" alt="" class="h-5 w-5">
                     <span class="text-sm">Registro de Baixas</span>
