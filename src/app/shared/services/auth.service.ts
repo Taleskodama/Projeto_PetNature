@@ -156,6 +156,43 @@ getUserType(id: string): Observable<string | null> {
     map((user: any) => user ? user.role : null) // Aqui pega a role do usuário
   );
 }
+uploadUserPhoto(photoURL: string): Promise<void> {
+  return this.auth.currentUser.then(currentUser => {
+    if (currentUser) {
+      return this.firestore.doc(`users/${currentUser.uid}`).update({ photo: photoURL });
+    } else {
+      throw new Error('No user is currently logged in.');
+    }
+  });
+}
+updateUserData(user: UserInterface): Promise<void> {
+  return this.auth.currentUser.then(currentUser => {
+    if (currentUser) {
+      return this.firestore.doc(`users/${currentUser.uid}`).update(user);
+    } else {
+      throw new Error('No user is currently logged in.');
+    }
+  });
+}
 
+updateUserEmail(email: string): Promise<void> {
+  return this.auth.currentUser.then(currentUser => {
+    if (currentUser) {
+      return currentUser.updateEmail(email);
+    } else {
+      throw new Error('No user is currently logged in.');
+    }
+  });
+}
+
+updateUserPassword(password: string): Promise<void> {
+  return this.auth.currentUser.then(currentUser => {
+    if (currentUser) {
+      return currentUser.updatePassword(password);
+    } else {
+      throw new Error('No user is currently logged in.');
+    }
+  });
+}
 
 }
