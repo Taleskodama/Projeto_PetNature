@@ -2,19 +2,18 @@
 <app-header></app-header>
 
 <!-- CONTEÚDO PRINCIPAL -->
-<section class="p-6 ml-[20%] max-w-3xl mx-auto">
+<section class="pl-28 mt-24 pb-8 pt-8 ml-[20%] max-w-3xl mx-auto">
   
-  <!-- Botão de Voltar -->
-  <a routerLink="/produtos" class="text-gray-600 text-sm flex items-center gap-2 mb-4">
-    <img src="assets/icons/voltar.svg" class="h-4 w-4">
-    Voltar
-  </a>
-
-  <!-- Título -->
-  <h2 class="text-2xl font-semibold text-center">Detalhes do Produto</h2>
+  <!-- Título + Botão de Voltar -->
+  <div class="flex items-center mt-8 gap-2 mb-6">
+    <a routerLink="/produtos" class="text-gray-600 text-sm flex items-center">
+      <img src="assets/icons/Icon_Voltar.svg" class="h-5 w-5">
+    </a>
+    <h2 class="text-2xl font-semibold">Detalhes do Produto</h2>
+  </div>
 
   <!-- Imagem do Produto -->
-  <div class="flex justify-center mt-4">
+  <div class="flex  mt-4">
     <img [src]="produto?.image" alt="{{ produto?.name }}" class="h-40 w-auto rounded-md shadow-md border">
   </div>
 
@@ -22,37 +21,37 @@
   <div class="mt-6 space-y-4">
     <div>
       <label class="text-gray-600 text-sm">Nome</label>
-      <div class="border p-3 rounded-md bg-gray-100">{{ produto?.name }}</div>
+      <div class="border p-3 rounded-md border-accent-border bg-gray-100">{{ produto?.name }}</div>
     </div>
     
     <div>
       <label class="text-gray-600 text-sm">Categoria</label>
-      <div class="border p-3 rounded-md bg-gray-100">{{ produto?.category }}</div>
+      <div class="border p-3 rounded-md border-accent-border bg-gray-100">{{ produto?.category }}</div>
     </div>
     
     <div>
       <label class="text-gray-600 text-sm">Marca</label>
-      <div class="border p-3 rounded-md bg-gray-100">{{ produto?.brand }}</div>
+      <div class="border p-3 rounded-md border-accent-border bg-gray-100">{{ produto?.brand }}</div>
     </div>
     
     <div>
       <label class="text-gray-600 text-sm">Data de Cadastro</label>
-      <div class="border p-3 rounded-md bg-gray-100">{{ produto?.created_at | date:'dd/MM/yyyy' }}</div>
+      <div class="border p-3 rounded-md border-accent-border bg-gray-100">{{ produto?.created_at | date:'dd/MM/yyyy' }}</div>
     </div>
     
     <div>
       <label class="text-gray-600 text-sm">Data da última edição</label>
-      <div class="border p-3 rounded-md bg-gray-100">{{ produto?.last_edition?.timestamp | date:'dd/MM/yyyy' }}</div>
+      <div class="border p-3 rounded-md border-accent-border bg-gray-100">{{ produto?.last_edition?.timestamp | date:'dd/MM/yyyy' }}</div>
     </div>
     
     <div>
       <label class="text-gray-600 text-sm">Usuário que editou</label>
-      <div class="border p-3 rounded-md bg-gray-100">{{ produto?.last_edition?.user }}</div>
+      <div class="border p-3 rounded-md border-accent-border bg-gray-100">{{ produto?.last_edition?.user }}</div>
     </div>
     
     <div>
       <label class="text-gray-600 text-sm">Descrição</label>
-      <div class="border p-3 rounded-md bg-gray-100">{{ produto?.description }}</div>
+      <div class="border p-3 rounded-md border-accent-border bg-gray-100">{{ produto?.description }}</div>
     </div>
   </div>
 

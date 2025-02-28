@@ -1,60 +1,98 @@
 <app-sidebar></app-sidebar> <!-- Sidebar -->
 <app-header></app-header> <!-- Header -->
+
 <!-- CONTEÚDO PRINCIPAL -->
 <div class="ml-60 p-6">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>
-<section class="p-6 ml-[20%]">
 
-    <h2 class="text-2xl font-semibold">Produtos</h2>
+<section class="pr-8 pt-20 pl-24 ml-[20%]">
+  <h2 class="mt-[30px] mb-11 text-2xl font-semibold">Produtos</h2>
+
+  <!-- Barra de ferramentas -->
+<div class="flex justify-between items-center w-full">
   
-    <!-- Barra de ferramentas -->
-    <div class="flex justify-between items-center mt-4">
-      <button class="border p-2 rounded-md shadow-sm">
-        <img src="assets/imgs/ordenar.png" alt="Layout">
+    <!-- Botão de Ordenação -->
+    <div class="relative">
+      <button class="border p-2 rounded-md border-accent-gray shadow-sm" 
+        (click)="mostrarOpcoesOrdenacao = !mostrarOpcoesOrdenacao">
+        <img src="assets/imgs/ordenar.png" alt="Ordenar">
       </button>
-      <div class="flex items-center gap-2">
-        <input type="text" placeholder="Buscar..." class="border p-2 rounded-md w-60">
-        <button class="border p-2 rounded-md shadow-sm">🔍</button>
-        <button class="border p-2 rounded-md shadow-sm flex items-center gap-2">
-            <img src="assets/icons/funil.svg" alt="Ícone Filtro" class="h-5 w-5">
-            Filtro
-          </button>
-          
+  
+      <div *ngIf="mostrarOpcoesOrdenacao" 
+        class="absolute bg-white border shadow-md rounded-md mt-2 w-48">
+        <button class="block px-4 py-2 text-left w-full hover:bg-gray-100" 
+          (click)="ordenarProdutos('dataAsc')">
+          Data da Última Edição (Crescente)
+        </button>
+        <button class="block px-4 py-2 text-left w-full hover:bg-gray-100" 
+          (click)="ordenarProdutos('dataDesc')">
+          Data da Última Edição (Decrescente)
+        </button>
+        <button class="block px-4 py-2 text-left w-full hover:bg-gray-100" 
+          (click)="ordenarProdutos('alfabeticaAsc')">
+          Ordem Alfabética (A-Z)
+        </button>
+        <button class="block px-4 py-2 text-left w-full hover:bg-gray-100" 
+          (click)="ordenarProdutos('alfabeticaDesc')">
+          Ordem Alfabética (Z-A)
+        </button>
       </div>
     </div>
   
-    <!-- Tabela de produtos -->
-    <div class="mt-6 border rounded-md shadow-md">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr class="border-b bg-gray-100">
-            <th class="p-4">Produto</th>
-            <th class="p-4">Tipo</th>
-            <th class="p-4">Marca</th>
-            <th class="p-4">Data de cadastro</th>
-            <th class="p-4"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let produto of produtos" class="border-b">
-            <td class="p-4 flex items-center gap-2">
-              <img [src]="produto.image" alt="{{ produto.name }}" class="h-10 w-10 rounded-md">
-              {{ produto.name }}
-            </td>
-            <td class="p-4">{{ produto.category }}</td>
-            <td class="p-4">{{ produto.brand }}</td>
-            <td class="p-4">{{ produto.created_at | date:'dd/MM/yyyy' }}</td>
-            <td class="p-4">
-                <a [routerLink]="['/detalhes-produto', produto.uid]" class="bg-secondary-dark text-white px-4 py-2 rounded-md shadow-md">
-                  Detalhes
-                </a>
-              </td>
-              
-              
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+    <!-- Input de Busca e Botão de Filtro -->
+    <div class="flex items-center gap-2">
+      <!-- Campo de Busca -->
+      <div class="relative w-60">
+        <input 
+          type="text" 
+          placeholder="Buscar..." 
+          class="border border-accent-gray p-2 pr-10 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary transition w-full"
+          [(ngModel)]="searchTerm" 
+          (input)="filtrarProdutos()"
+        >
+        <img src="assets/icons/lupa.svg" alt="Buscar" 
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 cursor-pointer">
+      </div>
   
+      <!-- Botão de Filtro -->
+      <button class="border p-2 rounded-md border-accent-gray shadow-sm flex items-center gap-2">
+        <img src="assets/icons/funil.svg" alt="Ícone Filtro" class="text-accent-dark font-[400] h-5 w-5">
+        Filtro
+      </button>
+    </div>
+  </div>
+  
+  
+
+  <!-- Tabela de produtos -->
+  <div class="mt-6 border rounded-md">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="border-b border-accent-border">
+          <th class="p-4">Produto</th>
+          <th class="p-4">Tipo</th>
+          <th class="p-4">Marca</th>
+          <th class="p-4">Data de cadastro</th>
+          <th class="p-4"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let produto of produtosFiltrados" class="border-b">
+          <td class="p-4 flex items-center gap-2">
+            <img [src]="produto.image" alt="{{ produto.name }}" class="h-10 w-10 rounded-md">
+            {{ produto.name }}
+          </td>
+          <td class="p-4">{{ produto.category }}</td>
+          <td class="p-4">{{ produto.brand }}</td>
+          <td class="p-4">{{ produto.created_at | date:'dd/MM/yyyy' }}</td>
+          <td class="p-4">
+            <a [routerLink]="['/detalhes-produto', produto.uid]" class="bg-secondary-dark text-white px-4 py-2 rounded-md shadow-md">
+              Detalhes
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

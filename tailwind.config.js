@@ -22,6 +22,7 @@ export default {
           dark: ' #4D4C4C',
           danger:' #9E2020',
           sucess:' #254E05',
+          border: '#AEADAD',
         },
       },
     },
