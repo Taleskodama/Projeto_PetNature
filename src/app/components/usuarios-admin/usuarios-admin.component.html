@@ -43,11 +43,9 @@
                 <li class="w-full grid grid-cols-9 gap-2 items-center pl-[2%] pr-[3%] py-2" *ngFor="let user of users">
 
                     <input type="checkbox" id="meuCheckbox">
+
                     <div class=" place-content-end size-8 rounded-full bg-white">
-                        <!-- Imagem de fundo (Foto padrão) -->
-                        <img src="../../../assets/imgs/Foto_User.png" 
-                             alt="Foto padrão"
-                             class=" inset-0 w-full h-full object-cover">
+                        <img src="../../../assets/imgs/Foto_User.png" alt="Foto padrão" class=" inset-0 w-full h-full object-cover">
                     </div>
                     
                     <p class=" text-base font-normal whitespace-nowrap overflow-hidden text-ellipsis col-span-2">{{ user.name }}</p>
