@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    firebase: {
+    firebaseConfig: {
     apiKey: "AIzaSyCunuN4Yp7_V3ZXjDgdBc05_zntIGL0WtA",
     authDomain: "pet-nature.firebaseapp.com",
     projectId: "pet-nature",
