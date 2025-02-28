@@ -28,8 +28,9 @@
     </div>
     
         <!-- Cabeçalho da tabela -->
-    <div class=" grid grid-cols-6 font-semibold text-base text-accent-dark mb-3 px-[10%]">
-        <p class="col-span-2">Nome</p>
+    <div class=" grid grid-cols-7 font-semibold text-base text-accent-dark mb-3 px-[10%]">
+        <p> </p>
+        <p class="col-span-2 pl-[8%]">Nome</p>
         <p>Código</p>
         <p>Tipo</p>
         <p class="col-span-2">E-mail</p>
@@ -38,15 +39,16 @@
     <div>
         <!-- Lista de usuários -->
         <div>
-            <ul>
-                <li class="w-full grid grid-cols-8 gap-2 items-center pl-[2%] pr-[3%] py-2" *ngFor="let user of users">
-                    
-                        <div class=" place-content-end size-8 rounded-full bg-white">
-                            <!-- Imagem de fundo (Foto padrão) -->
-                            <img src="../../../assets/imgs/Foto_User.png" 
-                                 alt="Foto padrão"
-                                 class=" inset-0 w-full h-full object-cover">
-                        </div>
+            <ul class="max-h-60 overflow-y-scroll border border-gray-300 rounded-lg">
+                <li class="w-full grid grid-cols-9 gap-2 items-center pl-[2%] pr-[3%] py-2" *ngFor="let user of users">
+
+                    <input type="checkbox" id="meuCheckbox">
+                    <div class=" place-content-end size-8 rounded-full bg-white">
+                        <!-- Imagem de fundo (Foto padrão) -->
+                        <img src="../../../assets/imgs/Foto_User.png" 
+                             alt="Foto padrão"
+                             class=" inset-0 w-full h-full object-cover">
+                    </div>
                     
                     <p class=" text-base font-normal whitespace-nowrap overflow-hidden text-ellipsis col-span-2">{{ user.name }}</p>
                     <p class="text-base font-normal ">{{ user.code }}</p>
@@ -56,5 +58,9 @@
                 </li>
             </ul>
         </div>
+    </div>
+    <div class=" pt-[7%]  pr-[40%] flex justify-between">
+        <button class="bg-secondary-dark text-white rounded-lg w-[48%] h-14 translate-x-2/3 ">Adicionar Usuário</button>
+        <button class="bg-secondary-dark text-white rounded-lg w-[48%] h-14 translate-x-2/3">Remover Usuário</button>
     </div>
 </div>
