@@ -11,7 +11,7 @@
                     class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5"/>
                     <input
                     type="text"
-                    placeholder="Pesquisar Filme..."
+                    placeholder="Pesquisar"
                     class="w-52 h-10 pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     [(ngModel)]="searchQuery"
                     (input)="filterUsers()"
@@ -21,7 +21,7 @@
             <div class="relative ml-2">
                 <img src="../../../assets/icons/funil.svg" alt="Ícone de filtro"
                     class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5"/>
-                <input type="text" id="lname" name="lname"
+                <input type="button" id="lname" name="lname"
                     class="w-24 h-10 pl-4 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
             </div>
         </form>
