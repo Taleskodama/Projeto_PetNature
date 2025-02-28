@@ -18,6 +18,17 @@ import { PerfilComponent } from './components/perfil/perfil.component';
 import {HeaderComponent} from './shared/components/header/header.component';
 import { UsuariosAdminComponent } from './components/usuarios-admin/usuarios-admin.component';
 import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuario.component';
+import { EstoqueComponent } from './components/estoque/estoque.component';
+import { RegistroBaixasComponent } from './components/registro-baixas/registro-baixas.component';
+import { ProdutosComponent } from './components/produtos/produtos.component';
+
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { DetalhesProdutoComponent } from './components/produtos/detalhes-produto/detalhes-produto.component';
+
+
+
+
 
 
 
@@ -34,18 +45,27 @@ import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuar
     PerfilComponent,
     HeaderComponent,
     UsuariosAdminComponent,
-    EditarUsuarioComponent
+    EditarUsuarioComponent,
+    EstoqueComponent,
+    RegistroBaixasComponent,
+    ProdutosComponent,
+    DetalhesProdutoComponent
   
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    
+
+    
+    
   ],
-  providers: [],
+  providers: [provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore())],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

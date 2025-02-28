@@ -11,7 +11,12 @@ import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuar
 
 import { AuthGuard } from './shared/guards/auth.guard';
 import { AdminGuard } from './shared/guards/admin.guard';
-import { EstoquistaGuard } from './shared/guards/estoquista.guard';
+import { EstoqueComponent } from './components/estoque/estoque.component';
+import { RegistroBaixasComponent } from './components/registro-baixas/registro-baixas.component';
+import { RoleGuard } from './shared/guards/role.guard';
+import { ProdutosComponent } from './components/produtos/produtos.component';
+import { DetalhesProdutoComponent } from './components/produtos/detalhes-produto/detalhes-produto.component';
+
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
@@ -21,10 +26,13 @@ const routes: Routes = [
   {path:'telaPrincipal', component:TelaPrincipalComponent,canActivate: [AuthGuard]},
   {path:'perfil', component:PerfilComponent, canActivate: [AuthGuard]},
   {path:'usuariosAdmin',component:UsuariosAdminComponent,canActivate: [AdminGuard]},
-  {path:'editarUsuario', component:EditarUsuarioComponent,canActivate: [AuthGuard]}
+  {path:'editarUsuario', component:EditarUsuarioComponent,canActivate: [AuthGuard]},
+  {path: 'produtos', component: ProdutosComponent},
+  {path: 'estoque', component: EstoqueComponent, canActivate: [RoleGuard] },
+  {path: 'registroBaixas', component: RegistroBaixasComponent, canActivate: [RoleGuard] },
+  {path: 'detalhes-produto/:id', component: DetalhesProdutoComponent, canActivate: [AuthGuard] },
 
-
-  //canActivate: [EstoquistaGuard]
+  
   
 ];
 
