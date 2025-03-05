@@ -194,5 +194,7 @@ updateUserPassword(password: string): Promise<void> {
     }
   });
 }
-
+deleteUser(uid: string): Promise<void> {
+  return this.firestore.collection('users').doc(uid).delete();
+}
 }
