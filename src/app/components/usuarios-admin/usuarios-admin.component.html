@@ -42,7 +42,7 @@
             <ul class="max-h-60 overflow-y-scroll border border-gray-300 rounded-lg">
                 <li class="w-full grid grid-cols-9 gap-2 items-center pl-[2%] pr-[3%] py-2" *ngFor="let user of users">
 
-                    <input type="checkbox" id="meuCheckbox">
+                    <input type="checkbox" id="meuCheckbox" [(ngModel)]="user.selected">
 
                     <div class=" place-content-end size-8 rounded-full bg-white">
                         <img src="../../../assets/imgs/Foto_User.png" alt="Foto padrão" class=" inset-0 w-full h-full object-cover">
@@ -57,8 +57,33 @@
             </ul>
         </div>
     </div>
-    <div class=" pt-[7%]  pr-[40%] flex justify-between">
-        <button class="bg-secondary-dark text-white rounded-lg w-[48%] h-14 translate-x-2/3 ">Adicionar Usuário</button>
-        <button class="bg-secondary-dark text-white rounded-lg w-[48%] h-14 translate-x-2/3">Remover Usuário</button>
+    <div class=" pt-[7%]  pr-[20%] flex justify-between pl-[20%]">
+        <button (click)="toggleAddUserModal()" class="bg-secondary-dark text-white rounded-lg w-[48%] h-14">Adicionar Usuário</button>
+        <button (click)="deleteSelectedUsers()" class="bg-secondary-dark text-white rounded-lg w-[48%] h-14">Remover Usuários Selecionados</button>
+    
+    <!-- Modal de Adicionar Usuário -->
+    <div *ngIf="showAddUserModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-bold">Adicionar Usuário</h2>
+            <form (ngSubmit)="addUser()">
+                <input type="text" placeholder="Nome" [(ngModel)]="newUser.name" class="border p-2 rounded w-full mt-2">
+                <input type="email" placeholder="Email" [(ngModel)]="newUser.email" class="border p-2 rounded w-full mt-2">
+                <input type="password" placeholder="Senha" [(ngModel)]="newUser.password" class="border p-2 rounded w-full mt-2">
+                <input type="password" placeholder="Confirmar Senha" [(ngModel)]="newUser.confirmPassword" class="border p-2 rounded w-full mt-2">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Cadastrar</button>
+                <button type="button" (click)="toggleAddUserModal()" class="ml-2 bg-gray-400 text-white px-4 py-2 rounded">Cancelar</button>
+            </form>
+        </div>
     </div>
+
+    <!-- Modal de Confirmação de Remoção -->
+    <div *ngIf="showConfirmDeleteModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-bold">Remover Usuário</h2>
+            <p>Tem certeza que deseja remover <strong>{{ userToDelete?.name }}</strong>?</p>
+            <button (click)="deleteUser()" class="bg-red-500 text-white px-4 py-2 rounded mt-4">Remover</button>
+            <button (click)="toggleDeleteUserModal()" class="ml-2 bg-gray-400 text-white px-4 py-2 rounded">Cancelar</button>
+        </div>
+    </div>
+
 </div>
