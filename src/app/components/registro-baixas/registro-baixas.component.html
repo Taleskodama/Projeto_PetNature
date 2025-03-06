@@ -45,14 +45,18 @@
       <tbody>
         <tr *ngFor="let baixa of baixasFiltradas" class="border-b">
           <td class="p-4 flex items-center gap-2">
-            <img [src]="baixa.imagemProduto" alt="{{ baixa.estoqueNome }}" class="h-10 w-10 rounded-md">
-            {{ baixa.estoqueNome }}
+            <img [src]="baixa.imagemProduto" alt="{{ baixa.name }}" class="h-10 w-10 rounded-md">
+            {{ baixa.name }}
           </td>
           <td class="p-4">{{ baixa.qtd }}</td>
-          <td class="p-4">{{ baixa.usuarioEmail }}</td>
-          <td class="p-4">{{ baixa.registered_at | date:'dd/MM/yyyy' }}</td>
+          <td class="p-4">{{ baixa.usuario }}</td> <!-- Agora exibe o nome do usuário -->
+          <td class="p-4">{{ baixa.created_at | date:'dd/MM/yyyy' }}</td>
         </tr>
+        
+        
       </tbody>
     </table>
+    
+    
   </div>
 </section>

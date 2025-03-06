@@ -1,8 +1,7 @@
 export interface BaixaInterface {
-    id: string;
-    estoque: string;
-    qtd: number;
-    registered_at: number;
-    user: string;
-  }
-  
+  id?: string;
+  produto?: string;
+  qtd: number;
+  usuario?: string;  // 🔹 Adicionando o usuário responsável pela baixa
+  created_at?: any;  // 🔹 Permitindo o uso do Timestamp do Firestore
+}

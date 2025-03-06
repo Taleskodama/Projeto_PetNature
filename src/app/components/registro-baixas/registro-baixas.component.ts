@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BaixaService } from '../../shared/services/baixa.service';
 import { ProductService } from '../../shared/services/product.service';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { EstoqueService } from '../../shared/services/estoque.service';
 
 
 
@@ -15,41 +17,73 @@ export class RegistroBaixasComponent implements OnInit {
   baixasFiltradas: any[] = [];
   searchTerm: string = '';
 
-  constructor(private baixaService: BaixaService, private produtoService: ProductService) {}
+  constructor(private baixaService: BaixaService, private produtoService: ProductService,private firestore: Firestore,private estoqueService: EstoqueService ) {}
 
 
   ngOnInit(): void {
-    this.carregarBaixas();
+    this.carregarBaixas(); // ✅ Agora está pegando da coleção "estoques"
   }
+  
 
   async carregarBaixas() {
     this.baixaService.getBaixas().subscribe(async (data) => {
+      console.log("📥 Dados das baixas recebidos do Firestore:", data);
+  
       this.baixas = await Promise.all(
         data.map(async (baixa) => {
-          const estoque = await this.baixaService.getEstoqueById(baixa.estoque);
-          const produto = estoque ? await this.produtoService.getProductById(estoque['produto']) : null;
-          const usuario = await this.baixaService.getUserById(baixa.user);
-          
+          const estoque = baixa.produto ? await this.baixaService.getEstoqueById(baixa.produto) : null;
+          const usuario = baixa.usuario ? await this.baixaService.getUserById(baixa.usuario) : { name: 'Não informado' };
+  
           return {
             ...baixa,
-            estoqueNome: estoque ? estoque['name'] : 'Desconhecido',
-            usuarioEmail: usuario ? usuario['email'] : 'Desconhecido',
-            imagemProduto: produto ? produto['image'] : 'assets/imgs/default.png', // Caminho padrão
-            type: produto ? produto['category'] : 'Sem tipo',
-            brand: produto ? produto['brand'] : 'Sem marca'
+            imagemProduto: estoque?.['imagemProduto'] || 'assets/imgs/default.png',
+            name: estoque?.['name'] || 'Desconhecido',
+            qtd: baixa.qtd || 0,
+            usuario: usuario?.['name'] || 'Não informado',
+
+            created_at: baixa.created_at
+              ? new Date(baixa.created_at.seconds * 1000)
+              : new Date(),
           };
         })
       );
-      this.baixasFiltradas = [...this.baixas];
+  
+      console.log("📌 Baixas processadas:", this.baixas);
+      this.baixasFiltradas = [...this.baixas]; // Atualiza a exibição
     });
   }
   
   
   
-
+  
   filtrarBaixas() {
     this.baixasFiltradas = this.baixas.filter((baixa) =>
-      baixa.estoqueNome.toLowerCase().includes(this.searchTerm.toLowerCase())
+      baixa.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
+  
+
+  async atualizarBaixa(baixa: any) {
+    try {
+      const baixaRef = doc(this.firestore, 'baixas', baixa.id);
+      await setDoc(baixaRef, { qtd: baixa.qtd }, { merge: true });
+  
+      alert('Quantidade atualizada com sucesso!');
+    } catch (error) {
+      console.error("Erro ao atualizar quantidade:", error);
+      alert('Erro ao atualizar quantidade.');
+    }
+  }
+  async atualizarQuantidade(baixa: any) {
+    try {
+      const estoqueRef = doc(this.firestore, 'estoques', baixa.id);
+      await setDoc(estoqueRef, { qtd: baixa.qtd }, { merge: true });
+  
+      console.log('Quantidade atualizada no Firestore:', baixa.qtd);
+    } catch (error) {
+      console.error('Erro ao atualizar quantidade:', error);
+    }
+  }
+  
+  
 }

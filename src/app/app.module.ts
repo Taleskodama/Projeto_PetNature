@@ -26,6 +26,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { DetalhesProdutoComponent } from './components/produtos/detalhes-produto/detalhes-produto.component';
 import { EditarProdutoComponent } from './components/estoque/editar-produto/editar-produto.component';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 
 
 
@@ -62,12 +63,14 @@ import { EditarProdutoComponent } from './components/estoque/editar-produto/edit
     FormsModule,
     ReactiveFormsModule,
     
+    
+    
 
     
     
   ],
   providers: [provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideFirestore(() => getFirestore())],
+    provideFirestore(() => getFirestore()), provideStorage(() => getStorage())],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

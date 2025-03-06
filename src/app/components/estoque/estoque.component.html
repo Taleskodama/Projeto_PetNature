@@ -11,76 +11,136 @@
 
   <!-- Barra de ferramentas -->
   <div class="flex justify-between items-center w-full">
-    <!-- Input de Busca -->
-    <div class="relative w-60">
-      <input 
-        type="text" 
-        placeholder="Buscar..." 
-        class="border border-accent-gray p-2 pr-10 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary transition w-full"
-        [(ngModel)]="searchTerm" 
-        (input)="filtrarEstoques()"
-      >
-      <img src="assets/icons/lupa.svg" alt="Buscar" 
-        class="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 cursor-pointer">
+    
+    <!-- Botão de Ordenação -->
+    <div class="relative">
+      <button class="border p-2 rounded-md border-accent-gray shadow-sm"
+        (click)="mostrarOpcoesOrdenacao = !mostrarOpcoesOrdenacao">
+        <img src="assets/imgs/ordenar.png" alt="Ordenar">
+      </button>
+
+      <div *ngIf="mostrarOpcoesOrdenacao" class="absolute bg-white border shadow-md rounded-md mt-2 w-48">
+        <button class="block px-4 py-2 text-left w-full hover:bg-gray-100"
+          (click)="ordenarEstoques('dataAsc')">
+          Data da Última Edição (Crescente)
+        </button>
+        <button class="block px-4 py-2 text-left w-full hover:bg-gray-100"
+          (click)="ordenarEstoques('dataDesc')">
+          Data da Última Edição (Decrescente)
+        </button>
+        <button class="block px-4 py-2 text-left w-full hover:bg-gray-100"
+          (click)="ordenarEstoques('alfabeticaAsc')">
+          Ordem Alfabética (A-Z)
+        </button>
+        <button class="block px-4 py-2 text-left w-full hover:bg-gray-100"
+          (click)="ordenarEstoques('alfabeticaDesc')">
+          Ordem Alfabética (Z-A)
+        </button>
+      </div>
     </div>
 
-    <!-- Botão de Filtro -->
-    <button class="border p-2 rounded-md border-accent-gray shadow-sm flex items-center gap-2">
-      <img src="assets/icons/funil.svg" alt="Ícone Filtro" class="text-accent-dark font-[400] h-5 w-5">
-      Filtro
-    </button>
+     <!-- Botão Criar Produto -->
+<button class="border p-2 rounded-md border-accent-gray shadow-sm bg-green-600 text-white px-4 py-2 ml-4"
+(click)="abrirModalCriarProduto()">
+Criar Produto
+</button>
+
+    <!-- Input de Busca e Botão de Filtro -->
+    <div class="flex items-center gap-2">
+      <!-- Campo de Busca -->
+      <div class="relative w-60">
+        <input 
+          type="text" 
+          placeholder="Buscar..." 
+          class="border border-accent-gray p-2 pr-10 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary transition w-full"
+          [(ngModel)]="searchTerm" 
+          (input)="filtrarEstoques()"
+        >
+        <img src="assets/icons/lupa.svg" alt="Buscar" 
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 cursor-pointer">
+      </div>
+
+      <!-- Botão de Filtro -->
+      <button class="border p-2 rounded-md border-accent-gray shadow-sm flex items-center gap-2">
+        <img src="assets/icons/funil.svg" alt="Ícone Filtro" class="text-accent-dark font-[400] h-5 w-5">
+        Filtro
+      </button>
+    </div>
   </div>
 
-  <!-- Tabela de Estoque -->
+  <!-- Tabela de Estoques -->
   <div class="mt-6 border rounded-md">
     <table class="w-full text-left border-collapse">
-     <!-- Cabeçalho da Tabela -->
-<thead>
-    <tr class="border-b border-accent-border">
-      <th class="p-4">Nome</th>
-      <th class="p-4">Lote</th>
-      <th class="p-4">Quantidade</th>
-      <th class="p-4">Data de cadastro</th>
-      <th class="p-4"></th>
-    </tr>
-  </thead>
-  
-  <!-- Corpo da Tabela -->
-  <tbody>
-    <tr *ngFor="let estoque of estoquesFiltrados" class="border-b">
-      <td class="p-4 flex items-center gap-2">
-        <img [src]="estoque.imagemProduto" alt="{{ estoque.name }}" class="h-10 w-10 rounded-md">
-        {{ estoque.name }}
-      </td>
-      <td class="p-4">{{ estoque.lote }}</td>
-      <td class="p-4">{{ estoque.qtd }}</td>
-      <td class="p-4">{{ estoque.created_at | date:'dd/MM/yyyy' }}</td>
-      <td class="p-4">
-        <button class="bg-secondary-dark text-white px-4 py-2 rounded-md shadow-md">
-          Editar
-        </button>
-      </td>
-    </tr>
-  </tbody>
-  
+      <thead>
+        <tr class="border-b border-accent-border">
+          <th class="p-4">Nome</th>
+          <th class="p-4">Lote</th>
+          <th class="p-4">Quantidade</th>
+          <th class="p-4">Data de cadastro</th>
+          <th class="p-4"></th>
+        </tr>
+      </thead>
       <tbody>
         <tr *ngFor="let estoque of estoquesFiltrados" class="border-b">
           <td class="p-4 flex items-center gap-2">
-            <img [src]="estoque.imagemProduto" alt="{{ estoque.name }}" class="h-10 w-10 rounded-md">
+            <img [src]="estoque.image ? estoque.image : 'assets/imgs/default.png'" alt="{{ estoque.name }}" class="h-10 w-10 rounded-md">
+
             {{ estoque.name }}
           </td>
           <td class="p-4">{{ estoque.lote }}</td>
           <td class="p-4">{{ estoque.qtd }}</td>
           <td class="p-4">{{ estoque.created_at | date:'dd/MM/yyyy' }}</td>
           <td class="p-4">
-            <a [routerLink]="['/editar-produto', estoque.id]" 
-               class="bg-secondary-dark text-white px-4 py-2 rounded-md shadow-md">
+            <a [routerLink]="['/editar-produto', estoque.id]" class="bg-secondary-dark text-white px-4 py-2 rounded-md shadow-md">
               Editar
             </a>
           </td>
-          
         </tr>
       </tbody>
+      
+      
     </table>
+    <!-- Modal de Criação de Produto -->
+<div *ngIf="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+    <h3 class="text-xl font-semibold mb-4">Criar Novo Produto</h3>
+
+    <!-- Imagem do Produto -->
+    <div class="flex flex-col items-center">
+      <img *ngIf="imagemPreview" [src]="imagemPreview" class="w-32 h-32 object-cover rounded-md mb-2">
+      <label class="bg-gray-300 px-4 py-2 rounded-md cursor-pointer">
+        <input type="file" (change)="selecionarImagem($event)" class="hidden">
+        Selecionar Imagem
+      </label>
+    </div>
+
+    <!-- Formulário -->
+    <div class="mt-4">
+      <label class="block text-gray-700">Nome</label>
+      <input type="text" [(ngModel)]="novoProduto.name" class="border p-2 w-full rounded-md mb-2">
+
+      <label class="block text-gray-700">Categoria</label>
+      <input type="text" [(ngModel)]="novoProduto.category" class="border p-2 w-full rounded-md mb-2">
+
+      <label class="block text-gray-700">Marca</label>
+      <input type="text" [(ngModel)]="novoProduto.brand" class="border p-2 w-full rounded-md mb-2">
+
+      <label class="block text-gray-700">Lote</label>
+      <input type="text" [(ngModel)]="novoProduto.lote" class="border p-2 w-full rounded-md mb-2">
+
+      <label class="block text-gray-700">Quantidade</label>
+      <input type="number" [(ngModel)]="novoProduto.qtd" class="border p-2 w-full rounded-md mb-2">
+
+    </div>
+
+    <!-- Botões -->
+    <div class="flex justify-end gap-2">
+      <button (click)="fecharModal()" class="px-4 py-2 bg-gray-400 text-white rounded-md">Cancelar</button>
+      <button (click)="salvarProduto()" class="px-4 py-2 bg-green-600 text-white rounded-md">Salvar</button>
+    </div>
+  </div>
+</div>
+
+
   </div>
 </section>

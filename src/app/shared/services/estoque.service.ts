@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, doc, updateDoc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, updateDoc, getDoc, addDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { EstoqueInterface } from '../interfaces/estoque.interface';
 
@@ -36,6 +36,12 @@ export class EstoqueService {
       return null;
     }
   }
+
+  adicionarProduto(produto: any) {
+    const estoqueRef = collection(this.firestore, 'estoques'); // Usando a API correta
+    return addDoc(estoqueRef, produto);
+  }
+  
 }
   
 

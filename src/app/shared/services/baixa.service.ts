@@ -18,10 +18,19 @@ export class BaixaService {
   }
 
   async getEstoqueById(estoqueId: string) {
+    console.log("🛠️ Buscando estoque com ID:", estoqueId);
     const estoqueRef = doc(this.firestore, `estoques/${estoqueId}`);
     const estoqueSnap = await getDoc(estoqueRef);
-    return estoqueSnap.exists() ? estoqueSnap.data() : null;
+  
+    if (!estoqueSnap.exists()) {
+      console.warn("⚠️ Estoque não encontrado para ID:", estoqueId);
+      return null;
+    }
+  
+    console.log("📦 Estoque encontrado:", estoqueSnap.data());
+    return estoqueSnap.data();
   }
+  
 
   async getUserById(userId: string) {
     const userRef = doc(this.firestore, `users/${userId}`);
