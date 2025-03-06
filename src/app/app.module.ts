@@ -25,6 +25,7 @@ import { ProdutosComponent } from './components/produtos/produtos.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { DetalhesProdutoComponent } from './components/produtos/detalhes-produto/detalhes-produto.component';
+import { EditarProdutoComponent } from './components/estoque/editar-produto/editar-produto.component';
 
 
 
@@ -49,7 +50,8 @@ import { DetalhesProdutoComponent } from './components/produtos/detalhes-produto
     EstoqueComponent,
     RegistroBaixasComponent,
     ProdutosComponent,
-    DetalhesProdutoComponent
+    DetalhesProdutoComponent,
+    EditarProdutoComponent
   
   ],
   imports: [

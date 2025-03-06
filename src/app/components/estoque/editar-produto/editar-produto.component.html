@@ -1,0 +1,43 @@
+<app-sidebar></app-sidebar>
+<app-header></app-header>
+
+<div class="ml-60 p-6">
+  <router-outlet></router-outlet>
+</div>
+
+<section class="pr-8 pt-20 pl-24 ml-[20%]">
+  <h2 class="mt-[30px] mb-11 text-2xl font-semibold">Editar produto</h2>
+
+  <div *ngIf="estoque">
+    <div class="flex flex-col items-center">
+      <img [src]="estoque.imagemProduto" alt="Imagem do produto" class="h-40 w-40 rounded-md">
+      <button class="mt-2 text-primary underline">Alterar imagem</button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mt-4">
+      <div>
+        <label class="block font-semibold">Nome</label>
+        <input [(ngModel)]="estoque.name" class="w-full border p-2 rounded-md">
+      </div>
+
+      <div>
+        <label class="block font-semibold">Lote</label>
+        <input [(ngModel)]="estoque.lote" class="w-full border p-2 rounded-md">
+      </div>
+
+      <div>
+        <label class="block font-semibold">Quantidade</label>
+        <input type="number" [(ngModel)]="estoque.qtd" class="w-full border p-2 rounded-md">
+      </div>
+
+      <div>
+        <label class="block font-semibold">Data de Cadastro</label>
+        <input type="date" [(ngModel)]="estoque.created_at" class="w-full border p-2 rounded-md">
+      </div>
+    </div>
+
+    <button (click)="salvarAlteracoes()" class="bg-secondary-dark text-white px-6 py-3 rounded-md mt-4 w-full">
+      Salvar alterações
+    </button>
+  </div>
+</section>
