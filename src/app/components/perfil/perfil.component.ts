@@ -41,9 +41,11 @@ export class PerfilComponent implements OnInit {
       this.authService.updateUserData(this.user).then(() => {
         if (this.user!.email) {
           this.authService.updateUserEmail(this.user!.email);
+          console.log('Email updated');
         }
-        if (this.password) {
-          this.authService.updateUserPassword(this.password);
+        if (this.user!.name) {
+          this.authService.updateUserName(this.user!.name);
+          console.log('name updated')
         }
         if (this.user!.photo) {
           // Handle photo update if needed

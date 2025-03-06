@@ -185,10 +185,11 @@ updateUserEmail(email: string): Promise<void> {
   });
 }
 
-updateUserPassword(password: string): Promise<void> {
+updateUserName(name:string): Promise<void> {
   return this.auth.currentUser.then(currentUser => {
     if (currentUser) {
-      return currentUser.updatePassword(password);
+      return this.firestore.doc(`users/${currentUser.uid}`).update({ name: name }),
+      console.log('entrou na funçao update');
     } else {
       throw new Error('No user is currently logged in.');
     }
