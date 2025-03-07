@@ -17,6 +17,7 @@ import { RoleGuard } from './shared/guards/role.guard';
 import { ProdutosComponent } from './components/produtos/produtos.component';
 import { DetalhesProdutoComponent } from './components/produtos/detalhes-produto/detalhes-produto.component';
 import { EditarProdutoComponent } from './components/estoque/editar-produto/editar-produto.component';
+import { UsuariosGeralComponent } from './components/usuarios-geral/usuarios-geral.component';
 
 
 const routes: Routes = [
@@ -32,7 +33,8 @@ const routes: Routes = [
   {path: 'estoque', component: EstoqueComponent, canActivate: [RoleGuard] },
   {path: 'registroBaixas', component: RegistroBaixasComponent, canActivate: [RoleGuard] },
   {path: 'detalhes-produto/:id', component: DetalhesProdutoComponent, canActivate: [AuthGuard] },
-  { path: 'editar-produto/:id', component: EditarProdutoComponent }, // Nova rota
+  {path: 'editar-produto/:id', component: EditarProdutoComponent },
+  {path: 'usuariosGeral', component: UsuariosGeralComponent }
 
   
   

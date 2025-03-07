@@ -27,6 +27,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { DetalhesProdutoComponent } from './components/produtos/detalhes-produto/detalhes-produto.component';
 import { EditarProdutoComponent } from './components/estoque/editar-produto/editar-produto.component';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { UsuariosGeralComponent } from './components/usuarios-geral/usuarios-geral.component';
 
 
 
@@ -52,7 +53,8 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
     RegistroBaixasComponent,
     ProdutosComponent,
     DetalhesProdutoComponent,
-    EditarProdutoComponent
+    EditarProdutoComponent,
+    UsuariosGeralComponent
   
   ],
   imports: [
