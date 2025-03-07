@@ -26,24 +26,26 @@ export class RegistroBaixasComponent implements OnInit {
   
 
   async carregarBaixas() {
-    this.baixaService.getBaixas().subscribe(async (data) => {
-      console.log("📥 Dados das baixas recebidos do Firestore:", data);
+    this.estoqueService.getEstoques().subscribe(async (data) => {
+      console.log("📥 Estoques carregados do Firestore:", data);
   
       this.baixas = await Promise.all(
-        data.map(async (baixa) => {
-          const estoque = baixa.produto ? await this.baixaService.getEstoqueById(baixa.produto) : null;
-          const usuario = baixa.usuario ? await this.baixaService.getUserById(baixa.usuario) : { name: 'Não informado' };
+        data.map(async (estoque) => {
+          const produto = estoque.produto
+            ? await this.produtoService.getProductById(estoque.produto)
+            : null;
   
           return {
-            ...baixa,
-            imagemProduto: estoque?.['imagemProduto'] || 'assets/imgs/default.png',
-            name: estoque?.['name'] || 'Desconhecido',
-            qtd: baixa.qtd || 0,
-            usuario: usuario?.['name'] || 'Não informado',
-
-            created_at: baixa.created_at
-              ? new Date(baixa.created_at.seconds * 1000)
-              : new Date(),
+            ...estoque,
+            imagemProduto: produto?.image || 'assets/imgs/default.png', // 🔹 Puxa a imagem corretamente
+            name: produto?.name || "Desconhecido", // 🔹 Nome do produto correto
+            qtd: estoque.qtd || 0,
+            usuario: estoque.last_edition?.user || "Não informado", // 🔹 Último usuário que editou
+            created_at: estoque.created_at
+              ? (typeof estoque.created_at === 'number' 
+                  ? new Date(estoque.created_at)  // Se for número, converte diretamente
+                  : new Date(estoque.created_at.seconds * 1000)) // Se for Timestamp, converte corretamente
+              : new Date(), // Se não existir, define como a data atual
           };
         })
       );
@@ -52,6 +54,10 @@ export class RegistroBaixasComponent implements OnInit {
       this.baixasFiltradas = [...this.baixas]; // Atualiza a exibição
     });
   }
+  
+
+
+  
   
   
   
