@@ -37,23 +37,20 @@ export class RegistroBaixasComponent implements OnInit {
   
           return {
             ...estoque,
-            imagemProduto: produto?.image || 'assets/imgs/default.png', // 🔹 Puxa a imagem corretamente
-            name: produto?.name || "Desconhecido", // 🔹 Nome do produto correto
-            qtd: estoque.qtd || 0,
-            usuario: estoque.last_edition?.user || "Não informado", // 🔹 Último usuário que editou
-            created_at: estoque.created_at
-              ? (typeof estoque.created_at === 'number' 
-                  ? new Date(estoque.created_at)  // Se for número, converte diretamente
-                  : new Date(estoque.created_at.seconds * 1000)) // Se for Timestamp, converte corretamente
-              : new Date(), // Se não existir, define como a data atual
+            imagemProduto: produto?.image || 'assets/imgs/default.png',
+            lote: Number(estoque.lote) || 0, // ✅ Garante que seja número
+            qtd: Number(estoque.qtd) || 0,
+            created_at: Number(estoque.created_at) || Date.now(), // ✅ Converte corretamente
+            usuario: estoque.last_edition?.user || "Não informado",
           };
         })
       );
   
       console.log("📌 Baixas processadas:", this.baixas);
-      this.baixasFiltradas = [...this.baixas]; // Atualiza a exibição
+      this.baixasFiltradas = [...this.baixas];
     });
   }
+  
   
 
 

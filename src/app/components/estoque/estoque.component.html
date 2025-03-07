@@ -40,10 +40,36 @@
     </div>
 
      <!-- Botão Criar Produto -->
-<button class="border p-2 rounded-md border-accent-gray shadow-sm bg-green-600 text-white px-4 py-2 ml-4"
-(click)="abrirModalCriarProduto()">
-Criar Produto
-</button>
+
+    <div class="flex gap-4">
+      <button (click)="abrirModalCriarProduto()" class="bg-green-500 text-white px-4 py-2 rounded-md">
+        Criar Produto
+      </button>
+
+      <button (click)="abrirModalExcluirProduto()" class="bg-red-500 text-white px-4 py-2 rounded-md">
+        Excluir Produto
+      </button>
+    </div>
+
+    <div *ngIf="mostrarModalExcluir" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div class="bg-white p-6 rounded-md shadow-md">
+        <h2 class="text-lg font-semibold mb-4">Excluir Produto</h2>
+        <p>Selecione um produto para excluir:</p>
+    
+        <select [(ngModel)]="produtoSelecionadoParaExcluir" class="border p-2 w-full mt-2">
+          <option *ngFor="let estoque of estoques" [value]="estoque.id">
+            {{ estoque.name }}
+          </option>
+        </select>
+    
+        <div class="flex justify-end gap-4 mt-4">
+          <button (click)="fecharModalExcluirProduto()" class="bg-gray-500 text-white px-4 py-2 rounded-md">Cancelar</button>
+          <button (click)="excluirProduto()" class="bg-red-500 text-white px-4 py-2 rounded-md">Excluir</button>
+        </div>
+      </div>
+    </div>
+    
+
 
     <!-- Input de Busca e Botão de Filtro -->
     <div class="flex items-center gap-2">
@@ -83,7 +109,12 @@ Criar Produto
       <tbody>
         <tr *ngFor="let estoque of estoquesFiltrados" class="border-b">
           <td class="p-4 flex items-center gap-2">
-            <img [src]="estoque.image ? estoque.image : 'assets/imgs/default.png'" alt="{{ estoque.name }}" class="h-10 w-10 rounded-md">
+            <img 
+              [src]="estoque.imagemProduto" 
+              alt="{{ estoque.name }}" 
+              class="h-10 w-10 rounded-md"
+              onerror="this.onerror=null;this.src='assets/imgs/default.png';"
+            />
 
             {{ estoque.name }}
           </td>

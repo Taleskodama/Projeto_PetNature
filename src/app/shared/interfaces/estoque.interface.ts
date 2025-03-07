@@ -5,13 +5,14 @@ export interface EstoqueInterface {
   name: string;
   produto: string; // ID do produto vinculado ao estoque
   qtd: number;
-  lote: string;
-  created_at: Timestamp | number; // 🔹 Aceita Firestore.Timestamp ou número
+  lote: number;
+  created_at: number; // 🔹 Aceita Firestore.Timestamp ou número
   imagemProduto?: string; // 🔹 Opcional, pois será carregado dinamicamente
   type?: string;
   brand?: string;
+  image?: string;
   last_edition?: {
-    timestamp: Timestamp | number;
+    timestamp:  number;
     user: string;
   }; // 🔹 Adicionado conforme Firestore
 }

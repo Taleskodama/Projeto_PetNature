@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EstoqueService } from '../../shared/services/estoque.service';
 import { ProductService } from '../../shared/services/product.service';
-import { addDoc, collection, deleteDoc, doc, Firestore, setDoc, Timestamp } from '@angular/fire/firestore';
+import { addDoc, collection, deleteDoc, doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, getStorage } from '@angular/fire/storage';
-
 
 @Component({
   selector: 'app-estoque',
@@ -18,7 +17,8 @@ export class EstoqueComponent implements OnInit {
   mostrarModal: boolean = false;
   imagemPreview: string | null = null;
   imagemArquivo: File | null = null;
-
+  mostrarModalExcluir: boolean = false;
+  produtoSelecionadoParaExcluir: string | null = null;
 
 
   novoProduto = {
@@ -30,10 +30,8 @@ export class EstoqueComponent implements OnInit {
     lote: '',
     qtd: 0
   };
-  
 
-
-  constructor(private estoqueService: EstoqueService, private produtoService: ProductService,private firestore: Firestore, private storage: Storage) {}
+  constructor(private estoqueService: EstoqueService, private produtoService: ProductService, private firestore: Firestore, private storage: Storage) {}
 
   ngOnInit(): void {
     this.carregarEstoque();
@@ -41,7 +39,7 @@ export class EstoqueComponent implements OnInit {
 
   async carregarEstoque() {
     this.estoqueService.getEstoques().subscribe(async (data) => {
-      console.log("Dados do Firestore:", data);
+      console.log("📥 Estoques carregados do Firestore:", data);
   
       this.estoques = await Promise.all(
         data.map(async (estoque) => {
@@ -51,28 +49,24 @@ export class EstoqueComponent implements OnInit {
   
           return {
             ...estoque,
-            imagemProduto: produto?.image || 'assets/imgs/default.png',
-            lote: estoque.lote || 'Sem lote',
-            qtd: estoque.qtd || 0,
-            created_at: estoque.created_at
-            ? (typeof estoque.created_at === 'number' 
-                ? new Date(estoque.created_at)  // Se for número, converte diretamente
-                : new Date(estoque.created_at.seconds * 1000)) // Se for Timestamp, converte corretamente
-            : new Date(), // Se não existir, define como a data atual
-          
-            usuario: estoque.last_edition?.user || "Não informado", // 🔹 Último usuário que editou
+            imagemProduto: estoque.image && typeof estoque.image === 'string' && estoque.image.startsWith("http")
+              ? estoque.image 
+              : 'assets/imgs/Foto_Produto.png', // ✅ Define imagem padrão caso não tenha imagem
+            lote: Number(estoque.lote) || 0, // ✅ Garante que seja número
+            qtd: Number(estoque.qtd) || 0, // ✅ Garante que seja número
+            created_at: Number(estoque.created_at) || Date.now(), // ✅ Garante que seja número
+            usuario: estoque.last_edition?.user || "Não informado",
           };
         })
       );
   
-      console.log("Estoques processados:", this.estoques);
+      console.log("📌 Estoques processados:", this.estoques);
       this.estoquesFiltrados = [...this.estoques];
     });
   }
   
   
-  
-  
+
   filtrarEstoques() {
     this.estoquesFiltrados = this.estoques.filter(estoque =>
       estoque.name.toLowerCase().includes(this.searchTerm.toLowerCase())
@@ -106,10 +100,10 @@ export class EstoqueComponent implements OnInit {
 
   selecionarImagem(event: any) {
     const arquivoSelecionado = event.target.files[0];
-  
+
     if (arquivoSelecionado) { 
       this.imagemArquivo = arquivoSelecionado; // Garante que não seja null
-  
+
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.imagemPreview = e.target.result;
@@ -117,37 +111,36 @@ export class EstoqueComponent implements OnInit {
       reader.readAsDataURL(arquivoSelecionado);
     }
   }
-  
 
   // Método para salvar o produto com a imagem
   async salvarProduto() {
     if (this.novoProduto.name && this.novoProduto.category && this.novoProduto.brand && this.novoProduto.lote && this.novoProduto.qtd > 0) {
       try {
         let imageUrl = '';
-  
+
         // 🔹 Se houver imagem, fazer o upload para o Firebase Storage
         if (this.imagemArquivo) {
           const storage = getStorage();
           const filePath = `produtos/${this.imagemArquivo.name}`;
           const fileRef = ref(storage, filePath);
-  
+
           await uploadBytes(fileRef, this.imagemArquivo);
           imageUrl = await getDownloadURL(fileRef);
         }
-  
+
         const estoquesRef = collection(this.firestore, 'estoques');
         const produtoData = {
           name: this.novoProduto.name,
           category: this.novoProduto.category,
           brand: this.novoProduto.brand,
-          lote: this.novoProduto.lote,
-          qtd: this.novoProduto.qtd,
+          lote: Number(this.novoProduto.lote) || 0, // ✅ Converte para número
+          qtd: Number(this.novoProduto.qtd) || 0, // ✅ Converte para número
           image: imageUrl || '', // 🔹 Se não houver imagem, deixar vazio
-          created_at: Timestamp.now()
+          created_at: Date.now() // ✅ Salva como timestamp (número)
         };
-  
+
         await addDoc(estoquesRef, produtoData);
-  
+
         alert('Produto salvo no estoque com sucesso!');
         this.fecharModal();
         this.carregarEstoque(); // Atualiza a lista
@@ -159,17 +152,17 @@ export class EstoqueComponent implements OnInit {
       alert('Preencha todos os campos obrigatórios.');
     }
   }
-  
 
-  
-async moverParaProdutos(estoque: any) {
-  try {
+  async moverParaProdutos(estoque: any) {
+    try {
       const produtosRef = collection(this.firestore, 'produtos');
       const produtoRef = doc(produtosRef, estoque.id); // Criando um doc com o mesmo ID
-      
+
       await setDoc(produtoRef, {
-          ...estoque,
-          created_at: Timestamp.now()
+        ...estoque,
+        lote: Number(estoque.lote) || 0, // ✅ Converte para número
+        qtd: Number(estoque.qtd) || 0, // ✅ Converte para número
+        created_at: Date.now() // ✅ Converte para número
       });
 
       // Deletando do estoque após mover para produtos
@@ -177,10 +170,35 @@ async moverParaProdutos(estoque: any) {
 
       alert('Produto movido para a lista de produtos!');
       this.carregarEstoque(); // Atualiza a lista
-  } catch (error) {
+    } catch (error) {
       console.error('Erro ao mover produto:', error);
       alert('Erro ao mover produto.');
+    }
   }
-}
 
+  abrirModalExcluirProduto() {
+    this.mostrarModalExcluir = true;
+  }
+  
+  fecharModalExcluirProduto() {
+    this.mostrarModalExcluir = false;
+  }
+  
+  async excluirProduto() {
+    if (!this.produtoSelecionadoParaExcluir) {
+      alert("Selecione um produto para excluir!");
+      return;
+    }
+  
+    try {
+      await deleteDoc(doc(this.firestore, 'estoques', this.produtoSelecionadoParaExcluir));
+      alert("Produto excluído com sucesso!");
+      this.carregarEstoque(); // Atualiza a lista de produtos
+      this.fecharModalExcluirProduto();
+    } catch (error) {
+      console.error("Erro ao excluir produto:", error);
+      alert("Erro ao excluir produto.");
+    }
+  }
+  
 }

@@ -37,9 +37,20 @@ export class EstoqueService {
     }
   }
 
-  adicionarProduto(produto: any) {
-    const estoqueRef = collection(this.firestore, 'estoques'); // Usando a API correta
-    return addDoc(estoqueRef, produto);
+  async adicionarProduto(produto: any) {
+    try {
+      const estoqueRef = collection(this.firestore, 'estoques');
+  
+      await addDoc(estoqueRef, {
+        ...produto,
+        lote: Number(produto.lote) || 0, // 🔹 Converte para número
+        created_at: Date.now(), // 🔹 Salva como número (timestamp em milissegundos)
+      });
+  
+      console.log("✅ Produto adicionado com sucesso!");
+    } catch (error) {
+      console.error("❌ Erro ao adicionar produto:", error);
+    }
   }
   
 }
