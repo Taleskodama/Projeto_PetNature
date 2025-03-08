@@ -33,19 +33,19 @@ export class RegistroBaixasComponent implements OnInit {
         data.map(async (estoque) => {
           let userCode = "Desconhecido"; // Valor padrão
   
-          // 🔹 Se o campo `last_edition.user` existir, verificar se é um `uid` ou um `code`
+          // 🔹 Se o campo last_edition.user existir, verificar se é um uid ou um code
           if (estoque.last_edition?.user) {
             if (estoque.last_edition.user.length <= 6) {
-              // ✅ Se for um `code`, usá-lo diretamente
+              // ✅ Se for um code, usá-lo diretamente
               userCode = estoque.last_edition.user;
             } else {
-              // 🔍 Se for um `uid`, buscar o `code` no Firestore
+              // 🔍 Se for um uid, buscar o code no Firestore
               const usersRef = collection(this.firestore, "users");
               const q = query(usersRef, where("uid", "==", estoque.last_edition.user));
               const querySnapshot = await getDocs(q);
   
               if (!querySnapshot.empty) {
-                userCode = querySnapshot.docs[0].data()['code']; // ✅ Obtém o `code`
+                userCode = querySnapshot.docs[0].data()['code']; // ✅ Obtém o code
               }
             }
           }
@@ -55,7 +55,7 @@ export class RegistroBaixasComponent implements OnInit {
             imagemProduto: estoque.image && estoque.image !== '' ? estoque.image : 'assets/imgs/default.png',
             name: estoque.name || "Desconhecido",
             qtd: Number(estoque.qtd) || 0,
-            usuario: userCode, // ✅ Agora exibe corretamente o `code` ou "Desconhecido"
+            usuario: userCode, // ✅ Agora exibe corretamente o code ou "Desconhecido"
             created_at: Number(estoque.created_at) || Date.now(),
           };
         })
