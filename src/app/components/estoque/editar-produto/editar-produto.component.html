@@ -10,9 +10,19 @@
 
   <div *ngIf="estoque">
     <div class="flex flex-col items-center">
-      <img [src]="estoque.imagemProduto" alt="Imagem do produto" class="h-40 w-40 rounded-md">
-      <button class="mt-2 text-primary underline">Alterar imagem</button>
+      <img 
+        [src]="estoque.image && estoque.image !== '' ? estoque.image : '/../assets/imgs/Foto_Produto.png'"
+        alt="Imagem do produto"
+        class="h-40 w-40 rounded-md object-cover"
+      />
+    
+      <!-- Botão para alterar imagem -->
+      <label class="mt-2 text-primary underline cursor-pointer">
+        <input type="file" (change)="alterarImagem($event)" class="hidden">
+        Alterar imagem
+      </label>
     </div>
+    
 
     <div class="grid grid-cols-2 gap-4 mt-4">
       <div>
@@ -21,19 +31,21 @@
       </div>
 
       <div>
+        <label class="block font-semibold">Categoria</label>
+        <input [(ngModel)]="estoque.category" class="w-full border p-2 rounded-md">
+      </div>
+
+      <div>
+        <label class="block font-semibold">Marca</label>
+        <input [(ngModel)]="estoque.brand" class="w-full border p-2 rounded-md">
+      </div>
+
+      <div>
         <label class="block font-semibold">Lote</label>
-        <input [(ngModel)]="estoque.lote" class="w-full border p-2 rounded-md">
+        <input type="text" [(ngModel)]="estoque.lote" class="w-full border p-2 rounded-md">
       </div>
 
-      <div>
-        <label class="block font-semibold">Quantidade</label>
-        <input type="number" [(ngModel)]="estoque.qtd" class="w-full border p-2 rounded-md">
-      </div>
-
-      <div>
-        <label class="block font-semibold">Data de Cadastro</label>
-        <input type="date" [(ngModel)]="estoque.created_at" class="w-full border p-2 rounded-md">
-      </div>
+      
     </div>
 
     <button (click)="salvarAlteracoes()" class="bg-secondary-dark text-white px-6 py-3 rounded-md mt-4 w-full">

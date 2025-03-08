@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EstoqueService } from '../../shared/services/estoque.service';
 import { ProductService } from '../../shared/services/product.service';
-import { addDoc, collection, deleteDoc, doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { addDoc, collection, deleteDoc, doc, Firestore, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, getStorage } from '@angular/fire/storage';
 
 @Component({
@@ -153,29 +153,6 @@ export class EstoqueComponent implements OnInit {
     }
   }
 
-  async moverParaProdutos(estoque: any) {
-    try {
-      const produtosRef = collection(this.firestore, 'produtos');
-      const produtoRef = doc(produtosRef, estoque.id); // Criando um doc com o mesmo ID
-
-      await setDoc(produtoRef, {
-        ...estoque,
-        lote: Number(estoque.lote) || 0, // ✅ Converte para número
-        qtd: Number(estoque.qtd) || 0, // ✅ Converte para número
-        created_at: Date.now() // ✅ Converte para número
-      });
-
-      // Deletando do estoque após mover para produtos
-      await deleteDoc(doc(this.firestore, 'estoques', estoque.id));
-
-      alert('Produto movido para a lista de produtos!');
-      this.carregarEstoque(); // Atualiza a lista
-    } catch (error) {
-      console.error('Erro ao mover produto:', error);
-      alert('Erro ao mover produto.');
-    }
-  }
-
   abrirModalExcluirProduto() {
     this.mostrarModalExcluir = true;
   }
@@ -191,7 +168,27 @@ export class EstoqueComponent implements OnInit {
     }
   
     try {
-      await deleteDoc(doc(this.firestore, 'estoques', this.produtoSelecionadoParaExcluir));
+      // 🔹 Exclui primeiro da coleção "estoques"
+      const estoqueRef = doc(this.firestore, 'estoques', this.produtoSelecionadoParaExcluir);
+      await deleteDoc(estoqueRef);
+      console.log(`Produto ${this.produtoSelecionadoParaExcluir} excluído da coleção 'estoques'`);
+  
+      // 🔹 Agora buscamos na coleção "produtos" um documento com o mesmo nome
+      const produtosRef = collection(this.firestore, 'produtos');
+      const q = query(produtosRef, where("name", "==", this.estoques.find(e => e.id === this.produtoSelecionadoParaExcluir)?.name));
+      const querySnapshot = await getDocs(q);
+  
+      // 🔹 Se encontrarmos o produto, deletamos da coleção "produtos"
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach(async (produtoDoc) => {
+          const produtoRef = doc(this.firestore, 'produtos', produtoDoc.id);
+          await deleteDoc(produtoRef);
+          console.log(`Produto ${produtoDoc.id} excluído da coleção 'produtos'`);
+        });
+      } else {
+        console.warn("Produto não encontrado na coleção 'produtos', apenas removido de 'estoques'.");
+      }
+  
       alert("Produto excluído com sucesso!");
       this.carregarEstoque(); // Atualiza a lista de produtos
       this.fecharModalExcluirProduto();
@@ -200,5 +197,29 @@ export class EstoqueComponent implements OnInit {
       alert("Erro ao excluir produto.");
     }
   }
+  
+
+  async publicarProduto(estoque: any) {
+    try {
+      const produtosRef = collection(this.firestore, 'produtos');
+  
+      // Criando um novo documento na coleção "produtos"
+      await addDoc(produtosRef, {
+        name: estoque.name,
+        category: estoque.category,
+        brand: estoque.brand,
+        lote: Number(estoque.lote) || 0, // ✅ Garante que seja número
+        qtd: Number(estoque.qtd) || 0, // ✅ Garante que seja número
+        image: estoque.imagemProduto || 'assets/imgs/default.png', // ✅ Define imagem padrão caso não tenha
+        created_at: Date.now(), // ✅ Salva como timestamp
+      });
+  
+      alert('Produto publicado com sucesso na coleção de produtos!');
+    } catch (error) {
+      console.error('Erro ao publicar produto:', error);
+      alert('Erro ao publicar produto.');
+    }
+  }
+  
   
 }

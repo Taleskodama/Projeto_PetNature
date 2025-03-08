@@ -42,32 +42,42 @@
      <!-- Botão Criar Produto -->
 
     <div class="flex gap-4">
-      <button (click)="abrirModalCriarProduto()" class="bg-green-500 text-white px-4 py-2 rounded-md">
+      <button (click)="abrirModalCriarProduto()" class="bg-secondary-dark text-white px-4 py-2 rounded-md">
         Criar Produto
       </button>
 
-      <button (click)="abrirModalExcluirProduto()" class="bg-red-500 text-white px-4 py-2 rounded-md">
+      <button (click)="abrirModalExcluirProduto()" class="bg-red-700 text-white px-4 py-2 rounded-md">
         Excluir Produto
       </button>
     </div>
 
-    <div *ngIf="mostrarModalExcluir" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div class="bg-white p-6 rounded-md shadow-md">
-        <h2 class="text-lg font-semibold mb-4">Excluir Produto</h2>
-        <p>Selecione um produto para excluir:</p>
-    
-        <select [(ngModel)]="produtoSelecionadoParaExcluir" class="border p-2 w-full mt-2">
-          <option *ngFor="let estoque of estoques" [value]="estoque.id">
-            {{ estoque.name }}
-          </option>
-        </select>
-    
-        <div class="flex justify-end gap-4 mt-4">
-          <button (click)="fecharModalExcluirProduto()" class="bg-gray-500 text-white px-4 py-2 rounded-md">Cancelar</button>
-          <button (click)="excluirProduto()" class="bg-red-500 text-white px-4 py-2 rounded-md">Excluir</button>
-        </div>
-      </div>
+    <!-- Overlay para escurecer toda a tela (incluindo header e barra de pesquisa) -->
+<div *ngIf="mostrarModalExcluir || mostrarModal" class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+
+<!-- Modal de Exclusão -->
+<div *ngIf="mostrarModalExcluir" class="fixed inset-0 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-md shadow-md w-96">
+    <h2 class="text-lg font-semibold mb-4">Excluir Produto</h2>
+    <p>Selecione um produto para excluir:</p>
+
+    <select [(ngModel)]="produtoSelecionadoParaExcluir" class="border p-2 w-full mt-2 rounded-md">
+      <option *ngFor="let estoque of estoques" [value]="estoque.id">
+        {{ estoque.name }}
+      </option>
+    </select>
+
+    <div class="flex justify-end gap-4 mt-4">
+      <button (click)="fecharModalExcluirProduto()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-400">
+        Cancelar
+      </button>
+      <button (click)="excluirProduto()" class="bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-600">
+        Excluir
+      </button>
     </div>
+  </div>
+</div>
+
+
     
 
 
@@ -125,6 +135,12 @@
             <a [routerLink]="['/editar-produto', estoque.id]" class="bg-secondary-dark text-white px-4 py-2 rounded-md shadow-md hover:bg-secondary">
               Editar
             </a>
+              <button 
+              (click)="publicarProduto(estoque)" 
+              class="bg-white text-secondary-dark ml-6 px-4 py-2 rounded-md border-2 border-secondary-dark shadow-md hover:bg-secondary hover:text-white">
+              Publicar
+              </button>
+             
           </td>
         </tr>
       </tbody>
@@ -132,8 +148,9 @@
       
     </table>
     <!-- Modal de Criação de Produto -->
-<div *ngIf="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-  <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+<!-- Overlay para escurecer a tela -->
+<div *ngIf="mostrarModal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 relative">
     <h3 class="text-xl font-semibold mb-4">Criar Novo Produto</h3>
 
     <!-- Imagem do Produto -->
@@ -161,16 +178,16 @@
 
       <label class="block text-gray-700">Quantidade</label>
       <input type="number" [(ngModel)]="novoProduto.qtd" class="border p-2 w-full rounded-md mb-2">
-
     </div>
 
     <!-- Botões -->
-    <div class="flex justify-end gap-2">
-      <button (click)="fecharModal()" class="px-4 py-2 bg-gray-400 text-white rounded-md">Cancelar</button>
-      <button (click)="salvarProduto()" class="px-4 py-2 bg-green-600 text-white rounded-md">Salvar</button>
+    <div class="flex justify-end gap-2 mt-4">
+      <button (click)="fecharModal()" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-400">Cancelar</button>
+      <button (click)="salvarProduto()" class="px-4 py-2 bg-secondary-dark text-white rounded-md hover:bg-secondary">Salvar</button>
     </div>
   </div>
 </div>
+
 
 
   </div>
