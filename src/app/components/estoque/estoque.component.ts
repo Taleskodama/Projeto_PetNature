@@ -3,6 +3,7 @@ import { EstoqueService } from '../../shared/services/estoque.service';
 import { ProductService } from '../../shared/services/product.service';
 import { addDoc, collection, deleteDoc, doc, Firestore, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, getStorage } from '@angular/fire/storage';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-estoque',
@@ -31,7 +32,7 @@ export class EstoqueComponent implements OnInit {
     qtd: 0
   };
 
-  constructor(private estoqueService: EstoqueService, private produtoService: ProductService, private firestore: Firestore, private storage: Storage) {}
+  constructor(private estoqueService: EstoqueService, private produtoService: ProductService, private firestore: Firestore, private storage: Storage,private authService: AuthService ) {}
 
   ngOnInit(): void {
     this.carregarEstoque();
@@ -117,33 +118,57 @@ export class EstoqueComponent implements OnInit {
     if (this.novoProduto.name && this.novoProduto.category && this.novoProduto.brand && this.novoProduto.lote && this.novoProduto.qtd > 0) {
       try {
         let imageUrl = '';
-
+  
         // 🔹 Se houver imagem, fazer o upload para o Firebase Storage
         if (this.imagemArquivo) {
           const storage = getStorage();
           const filePath = `produtos/${this.imagemArquivo.name}`;
           const fileRef = ref(storage, filePath);
-
+  
           await uploadBytes(fileRef, this.imagemArquivo);
           imageUrl = await getDownloadURL(fileRef);
         }
-
-        const estoquesRef = collection(this.firestore, 'estoques');
+  
+        // 🔹 Pegando o usuário logado e aguardando a resposta corretamente
+        const usuarioAtual = await this.authService.getCurrentUser(); 
+        
+        if (!usuarioAtual || !usuarioAtual.uid) {
+          console.error("Usuário não encontrado!");
+          alert("Erro ao obter usuário logado.");
+          return;
+        }
+  
+        let userCode = "Desconhecido"; // Padrão caso não encontre
+  
+        // 🔹 Buscar o `code` do usuário logado no Firestore
+        const usersRef = collection(this.firestore, "users");
+        const q = query(usersRef, where("uid", "==", usuarioAtual.uid));
+        const querySnapshot = await getDocs(q);
+  
+        if (!querySnapshot.empty) {
+          userCode = querySnapshot.docs[0].data()['code']; // 🔹 Obtém o `code`
+        } else {
+          console.warn("Código do usuário não encontrado no Firestore.");
+        }
+  
+        // 🔹 Criando o objeto do produto com o `code` do usuário logado
         const produtoData = {
           name: this.novoProduto.name,
           category: this.novoProduto.category,
           brand: this.novoProduto.brand,
-          lote: Number(this.novoProduto.lote) || 0, // ✅ Converte para número
-          qtd: Number(this.novoProduto.qtd) || 0, // ✅ Converte para número
-          image: imageUrl || '', // 🔹 Se não houver imagem, deixar vazio
-          created_at: Date.now() // ✅ Salva como timestamp (número)
+          lote: Number(this.novoProduto.lote) || 0,
+          qtd: Number(this.novoProduto.qtd) || 0,
+          image: imageUrl || '', 
+          created_at: Date.now(), 
+          last_edition: { user: userCode } // 🔹 Agora salva o `code` corretamente
         };
-
+  
+        const estoquesRef = collection(this.firestore, 'estoques');
         await addDoc(estoquesRef, produtoData);
-
+  
         alert('Produto salvo no estoque com sucesso!');
         this.fecharModal();
-        this.carregarEstoque(); // Atualiza a lista
+        this.carregarEstoque(); 
       } catch (error) {
         console.error('Erro ao salvar produto no estoque:', error);
         alert('Erro ao salvar produto no estoque.');
@@ -152,6 +177,13 @@ export class EstoqueComponent implements OnInit {
       alert('Preencha todos os campos obrigatórios.');
     }
   }
+  
+  
+  
+  
+  
+  
+  
 
   abrirModalExcluirProduto() {
     this.mostrarModalExcluir = true;

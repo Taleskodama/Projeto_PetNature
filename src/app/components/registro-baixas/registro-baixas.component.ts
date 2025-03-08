@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaixaService } from '../../shared/services/baixa.service';
 import { ProductService } from '../../shared/services/product.service';
-import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { EstoqueService } from '../../shared/services/estoque.service';
 
 
@@ -31,41 +31,44 @@ export class RegistroBaixasComponent implements OnInit {
   
       this.baixas = await Promise.all(
         data.map(async (estoque) => {
-          // 🔹 Buscar informações do produto para obter a imagem correta
-          const produto = estoque.produto
-            ? await this.produtoService.getProductById(estoque.produto)
-            : null;
+          let userCode = "Desconhecido"; // Valor padrão
   
-          // 🔹 Buscar informações do usuário para obter o e-mail correto
-          const usuario = estoque.last_edition?.user
-            ? await this.baixaService.getUserById(estoque.last_edition.user)
-            : { email: "Não informado" };
+          // 🔹 Se o campo `last_edition.user` existir, verificar se é um `uid` ou um `code`
+          if (estoque.last_edition?.user) {
+            if (estoque.last_edition.user.length <= 6) {
+              // ✅ Se for um `code`, usá-lo diretamente
+              userCode = estoque.last_edition.user;
+            } else {
+              // 🔍 Se for um `uid`, buscar o `code` no Firestore
+              const usersRef = collection(this.firestore, "users");
+              const q = query(usersRef, where("uid", "==", estoque.last_edition.user));
+              const querySnapshot = await getDocs(q);
+  
+              if (!querySnapshot.empty) {
+                userCode = querySnapshot.docs[0].data()['code']; // ✅ Obtém o `code`
+              }
+            }
+          }
   
           return {
             ...estoque,
-            imagemProduto: produto?.image || 'assets/imgs/default.png', // ✅ Puxa imagem corretamente
+            imagemProduto: estoque.image && estoque.image !== '' ? estoque.image : 'assets/imgs/default.png',
             name: estoque.name || "Desconhecido",
             qtd: Number(estoque.qtd) || 0,
-            usuario, // ✅ Agora exibe o email do usuário corretamente
-            created_at: Number(estoque.created_at) || Date.now(), // ✅ Converte para número corretamente
+            usuario: userCode, // ✅ Agora exibe corretamente o `code` ou "Desconhecido"
+            created_at: Number(estoque.created_at) || Date.now(),
           };
         })
       );
   
       console.log("📌 Baixas processadas:", this.baixas);
-      this.baixasFiltradas = [...this.baixas]; // Atualiza a exibição
+      this.baixasFiltradas = [...this.baixas];
     });
   }
   
   
   
-  
 
-
-  
-  
-  
-  
   
   filtrarBaixas() {
     this.baixasFiltradas = this.baixas.filter((baixa) =>
