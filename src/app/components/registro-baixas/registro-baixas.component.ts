@@ -31,25 +31,33 @@ export class RegistroBaixasComponent implements OnInit {
   
       this.baixas = await Promise.all(
         data.map(async (estoque) => {
+          // 🔹 Buscar informações do produto para obter a imagem correta
           const produto = estoque.produto
             ? await this.produtoService.getProductById(estoque.produto)
             : null;
   
+          // 🔹 Buscar informações do usuário para obter o e-mail correto
+          const usuario = estoque.last_edition?.user
+            ? await this.baixaService.getUserById(estoque.last_edition.user)
+            : { email: "Não informado" };
+  
           return {
             ...estoque,
-            imagemProduto: produto?.image || 'assets/imgs/default.png',
-            lote: Number(estoque.lote) || 0, // ✅ Garante que seja número
+            imagemProduto: produto?.image || 'assets/imgs/default.png', // ✅ Puxa imagem corretamente
+            name: estoque.name || "Desconhecido",
             qtd: Number(estoque.qtd) || 0,
-            created_at: Number(estoque.created_at) || Date.now(), // ✅ Converte corretamente
-            usuario: estoque.last_edition?.user || "Não informado",
+            usuario, // ✅ Agora exibe o email do usuário corretamente
+            created_at: Number(estoque.created_at) || Date.now(), // ✅ Converte para número corretamente
           };
         })
       );
   
       console.log("📌 Baixas processadas:", this.baixas);
-      this.baixasFiltradas = [...this.baixas];
+      this.baixasFiltradas = [...this.baixas]; // Atualiza a exibição
     });
   }
+  
+  
   
   
 
@@ -80,13 +88,16 @@ export class RegistroBaixasComponent implements OnInit {
   async atualizarQuantidade(baixa: any) {
     try {
       const estoqueRef = doc(this.firestore, 'estoques', baixa.id);
-      await setDoc(estoqueRef, { qtd: baixa.qtd }, { merge: true });
+      await setDoc(estoqueRef, { qtd: Number(baixa.qtd) }, { merge: true });
   
-      console.log('Quantidade atualizada no Firestore:', baixa.qtd);
+      console.log('✅ Quantidade atualizada no Firestore:', baixa.qtd);
+      alert('Quantidade atualizada com sucesso!');
     } catch (error) {
-      console.error('Erro ao atualizar quantidade:', error);
+      console.error('❌ Erro ao atualizar quantidade:', error);
+      alert('Erro ao atualizar quantidade.');
     }
   }
+  
   
   
 }

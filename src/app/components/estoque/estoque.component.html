@@ -122,7 +122,7 @@
           <td class="p-4">{{ estoque.qtd }}</td>
           <td class="p-4">{{ estoque.created_at | date:'dd/MM/yyyy' }}</td>
           <td class="p-4">
-            <a [routerLink]="['/editar-produto', estoque.id]" class="bg-secondary-dark text-white px-4 py-2 rounded-md shadow-md">
+            <a [routerLink]="['/editar-produto', estoque.id]" class="bg-secondary-dark text-white px-4 py-2 rounded-md shadow-md hover:bg-secondary">
               Editar
             </a>
           </td>

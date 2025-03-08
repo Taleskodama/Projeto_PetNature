@@ -87,7 +87,7 @@
           <td class="p-4">{{ produto.brand }}</td>
           <td class="p-4">{{ produto.created_at | date:'dd/MM/yyyy' }}</td>
           <td class="p-4">
-            <a [routerLink]="['/detalhes-produto', produto.uid]" class="bg-secondary-dark text-white px-4 py-2 rounded-md shadow-md">
+            <a [routerLink]="['/detalhes-produto', produto.uid]" class="bg-secondary-dark text-white px-4 py-2 rounded-md shadow-md hover:bg-secondary">
               Detalhes
             </a>
           </td>
