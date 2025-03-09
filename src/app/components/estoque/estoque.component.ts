@@ -21,6 +21,11 @@ export class EstoqueComponent implements OnInit {
   mostrarModalExcluir: boolean = false;
   produtoSelecionadoParaExcluir: string | null = null;
 
+  filtroLote: string = '';
+  filtroData: string = '';
+  mostrarModalFiltro: boolean = false; // Controla a visibilidade do modal de filtros
+
+
 
   novoProduto = {
     name: '',
@@ -69,10 +74,41 @@ export class EstoqueComponent implements OnInit {
   
 
   filtrarEstoques() {
-    this.estoquesFiltrados = this.estoques.filter(estoque =>
-      estoque.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    this.estoquesFiltrados = this.estoques.filter((estoque) => {
+      const nomeFiltrado = estoque.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+  
+      // 🔹 Filtrando por Lote
+      const loteFiltrado = this.filtroLote ? estoque.lote.toString().includes(this.filtroLote) : true;
+  
+      // 🔹 Convertendo timestamp (número) para formato 'YYYY-MM-DD'
+      const dataCadastro = new Date(estoque.created_at).toISOString().split('T')[0];
+      const dataFiltrada = this.filtroData ? dataCadastro === this.filtroData : true;
+  
+      return nomeFiltrado && loteFiltrado && dataFiltrada;
+    });
   }
+
+  resetarFiltros() {
+    this.filtroLote = '';
+    this.filtroData = '';
+    this.filtrarEstoques();
+    this.mostrarModalFiltro = false; // Fecha o modal ao resetar os filtros
+  }
+  
+  
+  abrirModalFiltro() {
+    this.mostrarModalFiltro = true;
+  }
+  
+  fecharModalFiltro() {
+    this.mostrarModalFiltro = false;
+  }
+  
+  alternarModalFiltro() {
+    this.mostrarModalFiltro = !this.mostrarModalFiltro;
+  }
+  
+  
 
   ordenarEstoques(criterio: string) {
     switch (criterio) {

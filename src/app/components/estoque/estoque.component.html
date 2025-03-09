@@ -97,12 +97,50 @@
       </div>
 
       <!-- Botão de Filtro -->
-      <button class="border p-2 rounded-md border-accent-gray shadow-sm flex items-center gap-2">
-        <img src="assets/icons/funil.svg" alt="Ícone Filtro" class="text-accent-dark font-[400] h-5 w-5">
-        Filtro
+      <button 
+      class="border p-2 rounded-md border-accent-gray shadow-sm flex items-center gap-2"
+      (click)="alternarModalFiltro()"
+      >
+      <img src="assets/icons/funil.svg" alt="Ícone Filtro" class="text-accent-dark font-[400] h-5 w-5">
+      Filtro
       </button>
+
     </div>
   </div>
+<!-- Modal de Filtros -->
+<div *ngIf="mostrarModalFiltro" class="border border-accent-gray p-4 rounded-md shadow-md mt-4 bg-white">
+  <h3 class="font-semibold mb-2">Filtrar por:</h3>
+
+  <!-- Filtro por Lote -->
+  <label class="block mb-2">Lote:</label>
+  <input
+    type="text"
+    [(ngModel)]="filtroLote"
+    (input)="filtrarEstoques()"
+    class="border p-2 rounded-md w-full"
+    placeholder="Digite o lote..."
+  />
+
+  <!-- Filtro por Data de Cadastro -->
+  <label class="block mt-4 mb-2">Data de Cadastro:</label>
+  <input
+    type="date"
+    [(ngModel)]="filtroData"
+    (change)="filtrarEstoques()"
+    class="border p-2 rounded-md w-full"
+  />
+
+  <!-- Botão para Resetar Filtros -->
+<button 
+(click)="resetarFiltros(); fecharModalFiltro()" 
+class="mt-4 border p-2 rounded-md border-accent-gray shadow-sm w-full bg-white hover:bg-gray-100 transition"
+>
+Resetar Filtros
+</button>
+
+</div>
+
+
 
   <!-- Tabela de Estoques -->
   <div class="mt-6 border rounded-md">
