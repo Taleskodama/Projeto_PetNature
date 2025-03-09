@@ -1,7 +1,7 @@
 <app-sidebar></app-sidebar>
 <app-header></app-header>
 
-<div class="ml-[20%] mt-[4%]  max-w-screen ">
+<div class="ml-[20%] mt-[6%]  max-w-screen ">
     <h1 class="text-accent-dark text-4xl font-semibold pt-[4%] ml-[10%]">Usuários cadastrados</h1>
     
     <div class="  h-[8%] pb-[2%] mr-[6%]">
@@ -30,7 +30,7 @@
         <!-- Cabeçalho da tabela -->
     <div class=" grid grid-cols-7 font-semibold text-base text-accent-dark mb-3 px-[10%]">
         <p> </p>
-        <p class="col-span-2 pl-[8%]">Nome</p>
+        <p class="col-span-2 pl-[10%]">Nome</p>
         <p>Código</p>
         <p>Tipo</p>
         <p class="col-span-2">E-mail</p>
@@ -42,7 +42,7 @@
             <ul class="max-h-60 overflow-y-scroll border border-gray-300 rounded-lg">
                 <li class="w-full grid grid-cols-9 gap-2 items-center pl-[2%] pr-[3%] py-2" *ngFor="let user of users">
 
-                    <input type="checkbox" id="meuCheckbox" [(ngModel)]="user.selected">
+                    <p class="pr-[90%]"> </p>
 
                     <div class=" place-content-end size-8 rounded-full bg-white">
                         <img src="../../../assets/imgs/Foto_User.png" alt="Foto padrão" class=" inset-0 w-full h-full object-cover">
@@ -50,14 +50,14 @@
                     
                     <p class=" text-base font-normal whitespace-nowrap overflow-hidden text-ellipsis col-span-2">{{ user.name }}</p>
                     <p class="text-base font-normal ">{{ user.code }}</p>
-                    <p class="text-base font-normal">{{ user.role }}</p>
+                    <p class="text-base font-normal pl-[12%]">{{ user.role }}</p>
                     <p class="text-base font-normal col-span-2">{{ user.email }}</p>
                     <button (click)="openEditUserModal(user)" class="bg-secondary-dark text-white rounded-lg w-20 h-8 translate-x-2/3 ">Editar</button>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="  pt-[7%] pl-[30%]  flex justify-between pr-[12%]">
+    <div class="  pt-[4%] pl-[30%]  flex justify-between pr-[12%]">
         <button (click)="toggleAddUserModal()" class="bg-secondary-dark hover:bg-secondary shadow-lg text-white rounded-lg w-[48%] h-14">Adicionar Usuário</button>
         
     </div>
@@ -92,15 +92,15 @@
             
             <div class="flex justify-between mt-4">
                 <button type="button" (click)="saveUserChanges()" 
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    class="bg-secondary-dark hover:bg-secondary shadow-lg text-white px-4 py-2 rounded ">
                     Salvar
                 </button>
                 <button type="button" (click)="deleteUser()" 
-                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    class=" text-white px-4 py-2 rounded bg-red-700 hover:bg-red-500">
                     Excluir Usuário
                 </button>
                 <button type="button" (click)="showEditUserModal = false" 
-                    class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    class="hover:bg-gray-400 text-white px-4 py-2 rounded bg-gray-600">
                     Cancelar
                 </button>
             </div>
