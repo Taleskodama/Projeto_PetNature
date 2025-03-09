@@ -10,7 +10,8 @@ import { TmplAstRecursiveVisitor } from '@angular/compiler';
 })
 export class UsuariosAdminComponent {
   users: any[] = [];
-  searchQuery: string = '';
+  usersFiltrados:any[] = [];
+  searchTerm: string = '';
   showAddUserModal = false;
   showEditUserModal = false;
   selectedUser: any = null;
@@ -29,24 +30,11 @@ export class UsuariosAdminComponent {
   ngOnInit(): void {
     this.auth.getUserList().subscribe(data => {
       this.users = data;
+      this.usersFiltrados = data;
     });
   }
 
-  filterUsers(): void {
-    const query = this.searchQuery.trim().toLowerCase();
 
-    if (query === '') {
-      // Se não houver pesquisa, exibe todos os usuários
-      this.auth.getUserList().subscribe(data => {
-        this.users = data;
-      });
-    } else {
-      // Filtra os usuários pelo nome
-      this.users = this.users.filter(user =>
-        user.name?.toLowerCase().includes(query)
-      );
-    }
-  }
 
   validateForm(): boolean {
     return this.newUser.name.trim() !== '' &&
@@ -116,4 +104,11 @@ export class UsuariosAdminComponent {
     }
   }
 
+  filtrarUsuarios() {
+    this.usersFiltrados = this.users.filter(user =>
+      user.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+  
 }

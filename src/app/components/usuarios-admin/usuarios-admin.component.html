@@ -7,14 +7,14 @@
     <div class="  h-[8%] pb-[2%] mr-[6%]">
         <form class="flex place-content-end pt-20">
             <div class="relative">
-                <img src="../../../assets/icons/lupa.svg" alt="Ícone de lupa " (click)="filterUsers()"
+                <img src="../../../assets/icons/lupa.svg" alt="Ícone de lupa "
                     class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5"/>
                     <input
                     type="text"
                     placeholder="Pesquisar"
                     class="w-52 h-10 pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    [(ngModel)]="searchQuery"
-                    (input)="filterUsers()"
+                    [(ngModel)]="searchTerm"
+                    (input)="filtrarUsuarios()"
                   >
             </div>
 
@@ -40,7 +40,7 @@
         <!-- Lista de usuários -->
         <div>
             <ul class="max-h-60 overflow-y-scroll border border-gray-300 rounded-lg">
-                <li class="w-full grid grid-cols-9 gap-2 items-center pl-[2%] pr-[3%] py-2" *ngFor="let user of users">
+                <li class="w-full grid grid-cols-9 gap-2 items-center pl-[2%] pr-[3%] py-2" *ngFor="let user of usersFiltrados">
 
                     <p class="pr-[90%]"> </p>
 
@@ -71,7 +71,7 @@
                 <input type="role" placeholder="Tipo de Usuário : admin, estoquista ou leitor" [(ngModel)]="newUser.role" name="newUser.role" class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
                 <input type="password" placeholder="Senha" [(ngModel)]="newUser.password" name="newUser.password" class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
                 <input type="password" placeholder="Confirmar Senha" [(ngModel)]="newUser.confirmPassword" name="newUser.confirmPassword" class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
-                <button type="submit" class="bg-secondary-dark text-white px-4 py-2 rounded mt-4 hover:bg-secondary-light">Cadastrar</button>
+                <button (click)="toggleAddUserModal()" type="submit" class="bg-secondary-dark text-white px-4 py-2 rounded mt-4 hover:bg-secondary-light">Cadastrar</button>
                 <button type="button" (click)="toggleAddUserModal()" class="ml-2 bg-gray-400 hover:bg-gray-700 text-white px-4 py-2 rounded">Cancelar</button>
             </form>
         </div>
