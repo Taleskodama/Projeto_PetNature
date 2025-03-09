@@ -11,14 +11,15 @@ export class UsuariosAdminComponent {
   users: any[] = [];
   searchQuery: string = '';
   showAddUserModal = false;
-  showConfirmDeleteModal = false;
+  showEditModal = false;
   userToDelete: any = null;
 
   newUser: any = {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: ''
   };
 
   constructor(private auth: AuthService) {}
@@ -65,10 +66,10 @@ export class UsuariosAdminComponent {
     this.showAddUserModal = !this.showAddUserModal;
   }
 
-  toggleDeleteUserModal(user?: any) {
+  /*toggleEditUserModal(user?: any) {
     this.userToDelete = user || null;
-    this.showConfirmDeleteModal = !!user;
-  }
+    this.showEditModal = !this.showEditModal;
+  }*/
 
   async deleteSelectedUsers() {
     const selectedUsers = this.users.filter(user => user.selected);
@@ -79,14 +80,14 @@ export class UsuariosAdminComponent {
     }
   }
 
-  async deleteUser() {
+  /*async deleteUser() {
     if (this.userToDelete) {
       try {
         await this.auth.deleteUser(this.userToDelete.uid);
-        this.toggleDeleteUserModal(); // Fecha o modal
+        this.toggleEditUserModal(); // Fecha o modal
       } catch (error) {
         console.error("Erro ao deletar usuário:", error);
       }
     }
-  }
+  }*/
 }
