@@ -65,11 +65,11 @@
     <div *ngIf="showAddUserModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
         <div class="bg-white p-6 rounded-lg shadow-lg">
             <h2 class="text-xl font-bold">Adicionar Usuário</h2>
-            <form (ngSubmit)="addUser()">
-                <input type="text" placeholder="Nome" [(ngModel)]="newUser.name" class="border p-2 rounded w-full mt-2">
-                <input type="email" placeholder="Email" [(ngModel)]="newUser.email" class="border p-2 rounded w-full mt-2">
-                <input type="password" placeholder="Senha" [(ngModel)]="newUser.password" class="border p-2 rounded w-full mt-2">
-                <input type="password" placeholder="Confirmar Senha" [(ngModel)]="newUser.confirmPassword" class="border p-2 rounded w-full mt-2">
+            <form (ngSubmit)="cadastrar()">
+                <input type="text" placeholder="Nome" [(ngModel)]="newUser.name" name="newUser.name" class="border p-2 rounded w-full mt-2">
+                <input type="email" placeholder="Email" [(ngModel)]="newUser.email" name="newUser.email" class="border p-2 rounded w-full mt-2">
+                <input type="password" placeholder="Senha" [(ngModel)]="newUser.password" name="newUser.password" class="border p-2 rounded w-full mt-2">
+                <input type="password" placeholder="Confirmar Senha" [(ngModel)]="newUser.confirmPassword" name="newUser.confirmPassword" class="border p-2 rounded w-full mt-2">
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Cadastrar</button>
                 <button type="button" (click)="toggleAddUserModal()" class="ml-2 bg-gray-400 text-white px-4 py-2 rounded">Cancelar</button>
             </form>

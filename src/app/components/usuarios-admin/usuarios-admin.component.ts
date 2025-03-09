@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
+import { UserInterface } from '../../shared/interfaces/user-interface';
 
 @Component({
   selector: 'app-usuarios-admin',
@@ -12,23 +13,28 @@ export class UsuariosAdminComponent {
   showAddUserModal = false;
   showConfirmDeleteModal = false;
   userToDelete: any = null;
-  // Definir newUser como um objeto vazio inicialmente
-  newUser = { name: '', email: '', password: '', confirmPassword: '' };
 
+  newUser: any = {
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  };
 
-  constructor(private userService: AuthService) {}
+  constructor(private auth: AuthService) {}
 
   ngOnInit(): void {
-    this.userService.getUserList().subscribe(data => {
+    this.auth.getUserList().subscribe(data => {
       this.users = data;
     });
   }
+
   filterUsers(): void {
     const query = this.searchQuery.trim().toLowerCase();
 
     if (query === '') {
       // Se não houver pesquisa, exibe todos os usuários
-      this.userService.getUserList().subscribe(data => {
+      this.auth.getUserList().subscribe(data => {
         this.users = data;
       });
     } else {
@@ -38,27 +44,20 @@ export class UsuariosAdminComponent {
       );
     }
   }
-  async addUser() {
-    if (!this.newUser.name || !this.newUser.email || !this.newUser.password || !this.newUser.confirmPassword) {
-      alert("Preencha todos os campos!");
-      return;
-    }
 
-    if (this.newUser.password !== this.newUser.confirmPassword) {
-      alert("As senhas não coincidem!");
-      return;
-    }
+  validateForm(): boolean {
+    return this.newUser.name.trim() !== '' &&
+           this.newUser.email.trim() !== '' &&
+           this.newUser.password.trim() !== '' &&
+           this.newUser.confirmPassword.trim() !== '';
+  }
 
-    try {
-      await this.userService.cadastro(
-        this.newUser.name,
-        this.newUser.email,
-        this.newUser.password,
-        this.newUser.confirmPassword
-      );
-      this.toggleAddUserModal(); // Fecha o modal após o cadastro
-    } catch (error) {
-      console.error("Erro ao cadastrar usuário:", error);
+  cadastrar() {
+    if (this.validateForm()) {
+      this.auth.cadastro(this.newUser.name, this.newUser.email, this.newUser.password, this.newUser.confirmPassword)
+      
+    } else {
+      alert('Preencha todos os campos');
     }
   }
 
@@ -70,9 +69,10 @@ export class UsuariosAdminComponent {
     this.userToDelete = user || null;
     this.showConfirmDeleteModal = !!user;
   }
-   async deleteSelectedUsers() {
+
+  async deleteSelectedUsers() {
     const selectedUsers = this.users.filter(user => user.selected);
-    
+
     if (selectedUsers.length === 0) {
       alert("Selecione pelo menos um usuário para excluir.");
       return;
@@ -82,7 +82,7 @@ export class UsuariosAdminComponent {
   async deleteUser() {
     if (this.userToDelete) {
       try {
-        await this.userService.deleteUser(this.userToDelete.uid);
+        await this.auth.deleteUser(this.userToDelete.uid);
         this.toggleDeleteUserModal(); // Fecha o modal
       } catch (error) {
         console.error("Erro ao deletar usuário:", error);
