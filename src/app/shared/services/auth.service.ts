@@ -174,6 +174,9 @@ updateUserData(user: UserInterface): Promise<void> {
     }
   });
 }
+updateUser(uid: string, userData: any) {
+  return this.firestore.collection('users').doc(uid).update(userData);
+}
 
 updateUserEmail(email: string): Promise<void> {
   return this.auth.currentUser.then(currentUser => {
