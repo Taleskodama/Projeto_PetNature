@@ -52,14 +52,14 @@
                     <p class="text-base font-normal ">{{ user.code }}</p>
                     <p class="text-base font-normal">{{ user.role }}</p>
                     <p class="text-base font-normal col-span-2">{{ user.email }}</p>
-                    <button   class="bg-secondary-dark text-white rounded-lg w-20 h-8 translate-x-2/3">Editar</button>
+                    <button (click)="openEditUserModal(user)" class="bg-secondary-dark text-white rounded-lg w-20 h-8 translate-x-2/3 ">Editar</button>
                 </li>
             </ul>
         </div>
     </div>
     <div class=" pt-[7%]  pr-[20%] flex justify-between pl-[20%]">
         <button (click)="toggleAddUserModal()" class="bg-secondary-dark hover:bg-secondary shadow-lg text-white rounded-lg w-[48%] h-14">Adicionar Usuário</button>
-        <button (click)="deleteSelectedUsers()" class="bg-secondary-dark hover:bg-secondary shadow-lg text-white rounded-lg w-[48%] h-14">Remover Usuários Selecionados</button>
+        <button  class="bg-secondary-dark hover:bg-secondary shadow-lg text-white rounded-lg w-[48%] h-14">Remover Usuários Selecionados</button>
     
     <!-- Modal de Adicionar Usuário -->
     <div *ngIf="showAddUserModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -77,14 +77,36 @@
         </div>
     </div>
 
-    <!-- Modal de Confirmação de Remoção -->
-    <div  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-xl font-bold">Remover Usuário</h2>
-            <p>Tem certeza que deseja remover <strong>{{ userToDelete?.name }}</strong>?</p>
-            <button  class="bg-red-500 text-white px-4 py-2 rounded mt-4">Remover</button>
-            <button  class="ml-2 bg-gray-400 text-white px-4 py-2 rounded">Cancelar</button>
-        </div>
+    <!-- Modal de Edição -->
+<div *ngIf="showEditUserModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-xl font-bold">Editar Usuário</h2>
+        
+        <form>
+            <input type="text" placeholder="Nome" [(ngModel)]="selectedUser.name" name="editUser.name" 
+                class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
+            <input type="email" placeholder="Email" [(ngModel)]="selectedUser.email" name="editUser.email" 
+                class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
+            <input type="text" placeholder="Tipo de Usuário (admin, estoquista ou leitor)" [(ngModel)]="selectedUser.role" 
+                name="editUser.role" class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
+            
+            <div class="flex justify-between mt-4">
+                <button type="button" (click)="saveUserChanges()" 
+                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    Salvar
+                </button>
+                <button type="button" (click)="deleteUser()" 
+                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    Excluir Usuário
+                </button>
+                <button type="button" (click)="showEditUserModal = false" 
+                    class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Cancelar
+                </button>
+            </div>
+        </form>
     </div>
+</div>
+
 
 </div>

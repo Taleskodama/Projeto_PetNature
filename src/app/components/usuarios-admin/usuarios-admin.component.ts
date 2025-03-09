@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { UserInterface } from '../../shared/interfaces/user-interface';
+import { TmplAstRecursiveVisitor } from '@angular/compiler';
 
 @Component({
   selector: 'app-usuarios-admin',
@@ -11,8 +12,9 @@ export class UsuariosAdminComponent {
   users: any[] = [];
   searchQuery: string = '';
   showAddUserModal = false;
-  showEditModal = false;
-  userToDelete: any = null;
+  showEditUserModal = false;
+  selectedUser: any = null;
+
 
   newUser: any = {
     name: '',
@@ -65,29 +67,53 @@ export class UsuariosAdminComponent {
   toggleAddUserModal() {
     this.showAddUserModal = !this.showAddUserModal;
   }
+  openEditUserModal(user: any) {
+    this.selectedUser = { ...user }; 
+    this.showEditUserModal = true;
+  }
 
-  /*toggleEditUserModal(user?: any) {
-    this.userToDelete = user || null;
-    this.showEditModal = !this.showEditModal;
-  }*/
+  
+  async saveUserChanges() {
+    if (!this.selectedUser) return;
+    const userUpdateData: any = {};
+    Object.keys(this.selectedUser).forEach(key => {
+      if (this.selectedUser[key] !== undefined) {
+        userUpdateData[key] = this.selectedUser[key];
+      }
+    });
 
-  async deleteSelectedUsers() {
-    const selectedUsers = this.users.filter(user => user.selected);
+    try {
+      await this.auth.updateUser(this.selectedUser.uid, userUpdateData);
+      alert("Usuário atualizado com sucesso!");
 
-    if (selectedUsers.length === 0) {
-      alert("Selecione pelo menos um usuário para excluir.");
-      return;
+      
+      this.users = this.users.map(user => 
+        user.uid === this.selectedUser.uid ? { ...this.selectedUser } : user
+      );
+
+      this.showEditUserModal = false; 
+    } catch (error) {
+      console.error("Erro ao atualizar usuário:", error);
     }
   }
 
-  /*async deleteUser() {
-    if (this.userToDelete) {
-      try {
-        await this.auth.deleteUser(this.userToDelete.uid);
-        this.toggleEditUserModal(); // Fecha o modal
-      } catch (error) {
-        console.error("Erro ao deletar usuário:", error);
-      }
+  
+  async deleteUser() {
+    if (!this.selectedUser) return;
+    const confirmDelete = confirm("Tem certeza que deseja excluir este usuário?");
+    if (!confirmDelete) return;
+
+    try {
+      await this.auth.deleteUser(this.selectedUser.uid);
+      alert("Usuário removido com sucesso!");
+
+      
+      this.users = this.users.filter(user => user.uid !== this.selectedUser.uid);
+
+      this.showEditUserModal = false; 
+    } catch (error) {
+      console.error("Erro ao remover usuário:", error);
     }
-  }*/
+  }
+
 }
