@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ProductInterface } from '../../shared/interfaces/product.interface';
 import { ProductService } from '../../shared/services/product.service';
 
-
 @Component({
   selector: 'app-produtos',
   templateUrl: './produtos.component.html',
@@ -13,13 +12,13 @@ export class ProdutosComponent implements OnInit {
   produtosFiltrados: ProductInterface[] = []; // Lista que será filtrada
   searchTerm: string = ''; // Termo de busca digitado pelo usuário
   ordenacao: string = ''; // Estado da ordenação
-  filtroNome: string = '';
+
   filtroTipo: string = '';
+  filtroMarca: string = '';
   filtroData: string = '';
 
   mostrarOpcoesOrdenacao: boolean = false;
-  
-
+  mostrarModalFiltro: boolean = false;
 
   constructor(private productService: ProductService) {}
 
@@ -37,11 +36,25 @@ export class ProdutosComponent implements OnInit {
   }
 
   filtrarProdutos(): void {
-    this.produtosFiltrados = this.produtos.filter(produto =>
-      produto.name.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
-      produto.category.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
-      produto.brand.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    this.produtosFiltrados = this.produtos.filter(produto => {
+      const nomeFiltrado = produto.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const tipoFiltrado = this.filtroTipo ? produto.category.toLowerCase().includes(this.filtroTipo.toLowerCase()) : true;
+      const marcaFiltrada = this.filtroMarca ? produto.brand.toLowerCase().includes(this.filtroMarca.toLowerCase()) : true;
+
+      // 🔹 Convertendo timestamp para data no formato 'YYYY-MM-DD'
+      const dataCadastro = new Date(produto.created_at).toISOString().split('T')[0];
+      const dataFiltrada = this.filtroData ? dataCadastro === this.filtroData : true;
+
+      return nomeFiltrado && tipoFiltrado && marcaFiltrada && dataFiltrada;
+    });
+  }
+
+  resetarFiltros(): void {
+    this.filtroTipo = '';
+    this.filtroMarca = '';
+    this.filtroData = '';
+    this.filtrarProdutos();
+    this.mostrarModalFiltro = false; // Fechar o modal ao resetar os filtros
   }
 
   ordenarProdutos(tipo: string): void {
