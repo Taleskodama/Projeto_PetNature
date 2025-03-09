@@ -17,6 +17,10 @@ export class RegistroBaixasComponent implements OnInit {
   baixasFiltradas: any[] = [];
   searchTerm: string = '';
 
+  filtroUsuario: string = ''; // Filtro de usuário
+  filtroData: string = ''; // Filtro de data
+  mostrarFiltros: boolean = false; // Controla a exibição do dropdown
+
   constructor(private baixaService: BaixaService, private produtoService: ProductService,private firestore: Firestore,private estoqueService: EstoqueService ) {}
 
 
@@ -66,14 +70,29 @@ export class RegistroBaixasComponent implements OnInit {
     });
   }
   
+  filtrarBaixas() {
+    this.baixasFiltradas = this.baixas.filter((baixa) => {
+      const nomeFiltrado = baixa.name.toLowerCase().includes(this.searchTerm.toLowerCase());
   
+      // 🔹 Converter timestamp (número) para formato 'YYYY-MM-DD'
+      const dataCadastro = new Date(baixa.created_at).toISOString().split('T')[0];
+  
+      const dataFiltrada = this.filtroData ? dataCadastro === this.filtroData : true;
+      const usuarioFiltrado = this.filtroUsuario ? baixa.usuario === this.filtroUsuario : true;
+  
+      return nomeFiltrado && dataFiltrada && usuarioFiltrado;
+    });
+  }
   
 
-  
-  filtrarBaixas() {
-    this.baixasFiltradas = this.baixas.filter((baixa) =>
-      baixa.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+  resetarFiltros() {
+    this.filtroUsuario = '';
+    this.filtroData = '';
+    this.filtrarBaixas();
+  }
+
+  toggleFiltros() {
+    this.mostrarFiltros = !this.mostrarFiltros;
   }
   
 

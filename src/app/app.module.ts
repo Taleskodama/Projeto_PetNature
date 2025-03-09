@@ -28,6 +28,7 @@ import { DetalhesProdutoComponent } from './components/produtos/detalhes-produto
 import { EditarProdutoComponent } from './components/estoque/editar-produto/editar-produto.component';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { UsuariosGeralComponent } from './components/usuarios-geral/usuarios-geral.component';
+import { UniquePipe } from './shared/pipes/unique.pipe';
 
 
 
@@ -54,6 +55,7 @@ import { UsuariosGeralComponent } from './components/usuarios-geral/usuarios-ger
     ProdutosComponent,
     DetalhesProdutoComponent,
     EditarProdutoComponent,
+    UniquePipe,
     UsuariosGeralComponent
   
   ],

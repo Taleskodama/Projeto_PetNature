@@ -25,13 +25,43 @@
   </div>
 
   <!-- Botão de Filtro -->
-  <button class="border p-2 rounded-md border-accent-gray shadow-sm flex items-center gap-2">
+  <button (click)="toggleFiltros()" class="border p-2 rounded-md border-accent-gray shadow-sm flex items-center gap-2">
     <img src="assets/icons/funil.svg" alt="Ícone Filtro" class="text-accent-dark font-[400] h-5 w-5">
     Filtro
   </button>
 </div>
 
-  <!-- Tabela de Registro de Baixas -->
+<!-- Dropdown de Filtros -->
+<div *ngIf="mostrarFiltros" class="border border-accent-gray p-4 rounded-md shadow-md mt-4 bg-white">
+  <h3 class="font-semibold mb-2">Filtrar por:</h3>
+
+  <!-- Filtro por Usuário -->
+<label class="block mb-2">Usuário:</label>
+<select [(ngModel)]="filtroUsuario" (change)="filtrarBaixas()" class="border p-2 rounded-md w-full">
+  <option value="">Todos os Usuários</option>
+  <option *ngFor="let baixa of baixas | unique: 'usuario'" [value]="baixa.usuario">
+    {{ baixa.usuario }}
+  </option>
+</select>
+
+
+  <!-- Filtro por Data -->
+<label class="block mt-4 mb-2">Data:</label>
+<input
+  type="date"
+  [(ngModel)]="filtroData"
+  (change)="filtrarBaixas()"
+  class="border p-2 rounded-md w-full"
+/>
+
+
+  <!-- Botão para Resetar Filtros -->
+  <button (click)="resetarFiltros()" class="mt-4 border p-2 rounded-md border-accent-gray shadow-sm w-full">
+    Resetar Filtros
+  </button>
+</div>
+
+<!-- Tabela de Registro de Baixas -->
 <div class="mt-6 border rounded-md">
   <table class="w-full text-left border-collapse">
     <thead>
@@ -48,7 +78,7 @@
           onerror="this.onerror=null;this.src='/assets/imgs/Foto_Produto.png';">
           {{ baixa.name }}
         </td>
-        <td class="p-4">{{ baixa.usuario }}</td> <!-- Agora exibe o code -->       
+        <td class="p-4">{{ baixa.usuario }}</td>       
         <td class="p-4">{{ baixa.created_at | date:'dd/MM/yyyy' }}</td>
         <td class="p-4 flex items-center gap-2">
           <input 
@@ -67,5 +97,6 @@
     </tbody>
   </table>
 </div>
+
 
 </section>
