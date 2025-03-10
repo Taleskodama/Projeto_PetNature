@@ -16,6 +16,11 @@ export class UsuariosAdminComponent {
   showEditUserModal = false;
   selectedUser: any = null;
 
+ 
+  filtroTipo: string = ''; // Filtro de tipo de usuário (role)
+  filtroEmail: string = ''; // Filtro por email
+  mostrarModalFiltro: boolean = false; // Controla a exibição do modal de filtros
+
 
   newUser: any = {
     name: '',
@@ -104,11 +109,39 @@ export class UsuariosAdminComponent {
     }
   }
 
-  filtrarUsuarios() {
-    this.usersFiltrados = this.users.filter(user =>
-      user.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+  filtrarUsuarios(): void {
+    this.usersFiltrados = this.users.filter(user => {
+      const nomeFiltrado = user.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const tipoFiltrado = this.filtroTipo ? user.role.toLowerCase().includes(this.filtroTipo.toLowerCase()) : true;
+      const emailFiltrado = this.filtroEmail ? user.email.toLowerCase().includes(this.filtroEmail.toLowerCase()) : true;
+      
+      return nomeFiltrado && tipoFiltrado && emailFiltrado;
+    });
   }
 
+  resetarFiltros(): void {
+    this.filtroTipo = '';
+    this.filtroEmail = '';
+    this.filtrarUsuarios();
+    this.mostrarModalFiltro = false; // Fechar o modal ao resetar os filtros
+  }
+
+  pesquisarUsuarios(): void {
+    const termo = this.searchTerm.toLowerCase().trim();
+  
+    // Se a barra estiver vazia, retorna todos os usuários
+    if (!termo) {
+      this.usersFiltrados = [...this.users];
+      return;
+    }
+  
+    // Filtra apenas pelo nome e não altera o estado do modal
+    this.usersFiltrados = this.users.filter(user => 
+      user.name?.toLowerCase().includes(termo)
+    );
+  }
+  
   
 }
+  
+
