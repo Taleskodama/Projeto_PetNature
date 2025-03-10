@@ -1,112 +1,101 @@
 <app-sidebar></app-sidebar>
 <app-header></app-header>
 
-<div class="ml-[20%] mt-[6%]  max-w-screen ">
+<div class="ml-[20%] mt-[6%] max-w-screen">
     <h1 class="text-accent-dark text-4xl font-semibold pt-[4%] ml-[10%]">Usuários cadastrados</h1>
     
-    <div class="  h-[8%] pb-[2%] mr-[6%]">
+    <!-- Barra de ferramentas -->
+    <div class="h-[8%] pb-[2%] mr-[6%]">
         <form class="flex place-content-end pt-20">
+            <!-- Campo de Pesquisa -->
             <div class="relative">
-                <img src="../../../assets/icons/lupa.svg" alt="Ícone de lupa "
-                    class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5"/>
-                    <input
-                    type="text"
-                    placeholder="Pesquisar"
-                    class="w-52 h-10 pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    [(ngModel)]="searchTerm"
-                    (input)="filtrarUsuarios()"
-                  >
+                <img src="../../../assets/icons/lupa.svg" alt="Ícone de lupa"
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5" />
+                    <input 
+                        type="text" 
+                        placeholder="Pesquisar..." 
+                        class="w-52 h-10 pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        [(ngModel)]="searchTerm"
+                        (keyup)="pesquisarUsuarios()"
+                        />
+
+                  
+                  
             </div>
 
-            <div class="relative ml-2">
-                <img src="../../../assets/icons/funil.svg" alt="Ícone de filtro"
-                    class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5"/>
-                <input type="button" id="lname" name="lname"
-                    class="w-24 h-10 pl-4 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
-            </div>
+            <!-- Botão de Filtro -->
+            <button 
+            (click)="mostrarModalFiltro = !mostrarModalFiltro"
+            class="border p-2 rounded-md border-accent-gray shadow-sm flex items-center gap-2 ml-2">
+            <img src="../../../assets/icons/funil.svg" alt="Ícone de filtro" class="text-accent-dark w-5 h-5">
+            Filtro
+          </button>
+          
         </form>
     </div>
-    
-        <!-- Cabeçalho da tabela -->
-    <div class=" grid grid-cols-7 font-semibold text-base text-accent-dark mb-3 px-[10%]">
-        <p> </p>
+
+    <!-- Filtros (Modal) -->
+    <div *ngIf="mostrarModalFiltro" class="border border-accent-gray p-4 rounded-md shadow-md mt-4 mx-6 mb-6 bg-white">
+        <h3 class="font-semibold mb-2">Filtrar por:</h3>
+
+        <!-- Filtro por Tipo de Usuário -->
+        <label class="block mb-2">Tipo de Usuário:</label>
+        <input type="text" [(ngModel)]="filtroTipo" (input)="filtrarUsuarios()" class="border p-2 rounded-md w-full"
+            placeholder="Digite o tipo de usuário...">
+
+        <!-- Filtro por E-mail -->
+        <label class="block mt-4 mb-2">E-mail:</label>
+        <input type="text" [(ngModel)]="filtroEmail" (input)="filtrarUsuarios()" class="border p-2 rounded-md w-full"
+            placeholder="Digite o e-mail...">
+
+        <!-- Botão para Resetar Filtros -->
+        <button (click)="resetarFiltros()"
+            class="mt-4 border p-2 rounded-md border-accent-gray shadow-sm w-full">
+            Resetar Filtros
+        </button>
+    </div>
+
+    <!-- Cabeçalho da tabela -->
+    <div class="grid grid-cols-7 font-semibold text-base text-accent-dark mb-3 px-[10%]">
+        <p></p>
         <p class="col-span-2 pl-[10%]">Nome</p>
         <p>Código</p>
         <p>Tipo</p>
         <p class="col-span-2">E-mail</p>
     </div>
     <hr class="w-full border-1 border-gray-300" />
+
+    <!-- Lista de Usuários -->
     <div>
-        <!-- Lista de usuários -->
-        <div>
-            <ul class="max-h-60 overflow-y-scroll border border-gray-300 rounded-lg">
-                <li class="w-full grid grid-cols-9 gap-2 items-center pl-[2%] pr-[3%] py-2" *ngFor="let user of usersFiltrados">
+        <ul class="max-h-60 overflow-y-scroll border border-gray-300 rounded-lg">
+            <li class="w-full grid grid-cols-9 gap-2 items-center pl-[2%] pr-[3%] py-2"
+                *ngFor="let user of usersFiltrados">
 
-                    <p class="pr-[90%]"> </p>
+                <p class="pr-[90%]"></p>
 
-                    <div class=" place-content-end size-8 rounded-full bg-white">
-                        <img src="../../../assets/imgs/Foto_User.png" alt="Foto padrão" class=" inset-0 w-full h-full object-cover">
-                    </div>
-                    
-                    <p class=" text-base font-normal whitespace-nowrap overflow-hidden text-ellipsis col-span-2">{{ user.name }}</p>
-                    <p class="text-base font-normal ">{{ user.code }}</p>
-                    <p class="text-base font-normal pl-[12%]">{{ user.role }}</p>
-                    <p class="text-base font-normal col-span-2">{{ user.email }}</p>
-                    <button (click)="openEditUserModal(user)" class="bg-secondary-dark text-white rounded-lg w-20 h-8 translate-x-2/3 ">Editar</button>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="  pt-[4%] pl-[30%]  flex justify-between pr-[12%]">
-        <button (click)="toggleAddUserModal()" class="bg-secondary-dark hover:bg-secondary shadow-lg text-white rounded-lg w-[48%] h-14">Adicionar Usuário</button>
-        
-    </div>
-        <!-- Modal de Adicionar Usuário -->
-    <div *ngIf="showAddUserModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-[68%]">
-            <h2 class="text-xl font-bold">Adicionar Usuário</h2>
-            <form (ngSubmit)="cadastrar()">
-                <input type="text" placeholder="Nome" [(ngModel)]="newUser.name" name="newUser.name" class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
-                <input type="email" placeholder="Email" [(ngModel)]="newUser.email" name="newUser.email" class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
-                <input type="role" placeholder="Tipo de Usuário : admin, estoquista ou leitor" [(ngModel)]="newUser.role" name="newUser.role" class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
-                <input type="password" placeholder="Senha" [(ngModel)]="newUser.password" name="newUser.password" class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
-                <input type="password" placeholder="Confirmar Senha" [(ngModel)]="newUser.confirmPassword" name="newUser.confirmPassword" class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
-                <button (click)="toggleAddUserModal()" type="submit" class="bg-secondary-dark text-white px-4 py-2 rounded mt-4 hover:bg-secondary-light">Cadastrar</button>
-                <button type="button" (click)="toggleAddUserModal()" class="ml-2 bg-gray-400 hover:bg-gray-700 text-white px-4 py-2 rounded">Cancelar</button>
-            </form>
-        </div>
-    </div>
+                <div class="place-content-end size-8 rounded-full bg-white">
+                    <img src="../../../assets/imgs/Foto_User.png" alt="Foto padrão"
+                        class="inset-0 w-full h-full object-cover">
+                </div>
 
-    <!-- Modal de Edição -->
-<div *ngIf="showEditUserModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-[68%]">
-        <h2 class="text-xl font-bold">Editar Usuário</h2>
-        
-        <form>
-            <input type="text" placeholder="Nome" [(ngModel)]="selectedUser.name" name="editUser.name" 
-                class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
-            <input type="email" placeholder="Email" [(ngModel)]="selectedUser.email" name="editUser.email" 
-                class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
-            <input type="text" placeholder="Tipo de Usuário (admin, estoquista ou leitor)" [(ngModel)]="selectedUser.role" 
-                name="editUser.role" class="border p-2 rounded w-full mt-2 focus:outline-none focus:ring-2 focus:ring-secondary">
-            
-            <div class="flex justify-start gap-2 mt-4">
-                <button type="button" (click)="saveUserChanges()" 
-                    class="bg-secondary-dark hover:bg-secondary shadow-lg text-white px-4 py-2 rounded ">
-                    Salvar
+                <p class="text-base font-normal whitespace-nowrap overflow-hidden text-ellipsis col-span-2">
+                    {{ user.name }}</p>
+                <p class="text-base font-normal">{{ user.code }}</p>
+                <p class="text-base font-normal pl-[12%]">{{ user.role }}</p>
+                <p class="text-base font-normal col-span-2">{{ user.email }}</p>
+                <button (click)="openEditUserModal(user)"
+                    class="bg-secondary-dark text-white rounded-lg w-20 h-8 translate-x-2/3">
+                    Editar
                 </button>
-                <button type="button" (click)="deleteUser()" 
-                    class=" text-white px-4 py-2 rounded bg-red-700 hover:bg-red-500">
-                    Excluir Usuário
-                </button>
-                <button type="button" (click)="showEditUserModal = false" 
-                    class="hover:bg-gray-400 text-white px-4 py-2 rounded bg-gray-600">
-                    Cancelar
-                </button>
-            </div>
-        </form>
+            </li>
+        </ul>
     </div>
-</div>
 
-
+    <!-- Botão para Adicionar Usuário -->
+    <div class="pt-[4%] pl-[30%] flex justify-between pr-[12%]">
+        <button (click)="toggleAddUserModal()"
+            class="bg-secondary-dark hover:bg-secondary shadow-lg text-white rounded-lg w-[48%] h-14">
+            Adicionar Usuário
+        </button>
+    </div>
 </div>
