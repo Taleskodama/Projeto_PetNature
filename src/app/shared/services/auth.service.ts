@@ -156,6 +156,12 @@ getUserType(id: string): Observable<string | null> {
     map((user: any) => user ? user.role : null) // Aqui pega a role do usuário
   );
 }
+
+getUserName(id: string): Observable<string | null> {
+  return this.firestore.collection('users').doc(id).valueChanges().pipe(
+    map((user: any) => user ? user.name : null) // Aqui pega a role do usuário
+  );
+}
 uploadUserPhoto(photoURL: string): Promise<void> {
   return this.auth.currentUser.then(currentUser => {
     if (currentUser) {

@@ -26,18 +26,18 @@
         <p class="text-accent-dark text-2xl mb-5 font-semibold">Tipo de usuário:</p>
         <p class="ml-[1%] pt-[0.3%] text-xl text-accent-gray font-normal">{{user.role}}</p>
     </div>
-    <form class="flex flex-col" (ngSubmit)="updateUser()">
+    <form class="flex flex-col " (ngSubmit)="updateUserName()">
         <div class="mb-3">
             <label for="Name" class="block text-sm font-[400] text-accent-gray mb-1">Nome</label>
-            <input type="Name" id="Name" name="Name" [(ngModel)]="user.name"
+            <input type="Name" id="Name" name="Name" 
                 class="w-[550px] p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
-                placeholder="Senha">
+                placeholder="Nome" [(ngModel)]="user.name" >
         </div>
         <div class="mb-3">
             <label for="email" class="block text-sm font-[400] text-accent-gray mb-1">E-mail</label>
-            <input type="email" id="email" name="email" [(ngModel)]="user.email"
-                class="w-[550px] p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary transition"
-                placeholder="E-mail" required>
+            <input type="email" id="email" name="email" 
+                class="w-[550px] p-2 text-sm border border-gray-300 rounded-lg focus:outline-none"
+                placeholder="E-mail" [(ngModel)]="user.email" readonly>
         </div>
         <div class="mb-3">
             <label for="codigo" class="block text-sm font-[400] text-accent-gray mb-1">Código</label>
@@ -47,7 +47,7 @@
         </div>
 
         <button type="submit"
-            class="w-[550px] bg-secondary-dark text-white py-2 rounded-lg hover:bg-secondary transition font-semibold shadow-md">
+            class="w-[550px] bg-secondary-dark text-white py-2 rounded-lg hover:bg-secondary transition font-semibold shadow-md " >
             Salvar informações
         </button>
     </form>
